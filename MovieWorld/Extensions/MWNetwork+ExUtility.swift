@@ -9,7 +9,6 @@
 import Foundation
 
 extension MWNetwork {
-    
     func getUrlWithParams(fullPath: String, params: [String: String]) -> String {
         var url: String = fullPath
         if params.count > 0 {

@@ -10,13 +10,16 @@ import UIKit
 import SnapKit
 
 class MWSearchViewController: UIViewController {
-    
+    // MARK: - variables
+    // MARK: - gui variables
+    // MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Search"
         self.view.backgroundColor = .white
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
+    // MARK: - constraints
+    // MARK: - setters / helpers / actions / handlers / utility
 }
-
-
+// MARK: - UITableViewDelegate

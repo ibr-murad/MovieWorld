@@ -15,7 +15,6 @@ extension String {
         let range = start..<end
         return String(self[range])
     }
-    
     subscript(integerIndex: Int) -> Character {
         let index = self.index(startIndex, offsetBy: integerIndex)
         return self[index]

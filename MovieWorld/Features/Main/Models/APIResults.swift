@@ -9,11 +9,12 @@
 import Foundation
 
 struct APIResults: Decodable {
+    // MARK: - variables
     let page: Int
     let numResults: Int
     let numPages: Int
-    let movies: [Movie]
-    
+    let movies: [APIMovie]
+    // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case page, numResults = "total_results", numPages = "total_pages", movies = "results"
     }
