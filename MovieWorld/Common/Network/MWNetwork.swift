@@ -22,11 +22,14 @@ class MWNetwork {
     }
     // MARK: - request
     func request<T: Decodable>(url: String,
-                               params: [String: String]? = nil,
+                               param: String? = nil,
                                okHandler: @escaping (_ data: T, _ response: HTTPURLResponse?) -> Void,
                                errorHandler: @escaping (_ error: MWError, _ response: HTTPURLResponse?) -> Void) {
         var fullPath = self.baseUrl + url
         fullPath = self.getUrlWithParams(fullPath: fullPath, params: self.params)
+        if param != nil {
+            fullPath = fullPath + (param ?? "")
+        }
         guard let url = URL(string: fullPath) else { return }
         let request = URLRequest(url: url)
         self.session.dataTask(with: request) { (data, response, error) in
@@ -57,4 +60,5 @@ struct URLPath {
     static let nowPlaing = "movie/now_playing"
     static let genreTvList = "genre/tv/list"
     static let genreMovieList = "genre/movie/list"
+    static let discoverMovie = "discover/movie"
 }

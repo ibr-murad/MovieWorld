@@ -33,7 +33,7 @@ class MWDetailsViewConroller: UIViewController {
     // MARK: - constraints
     private func makeConstraints() {
         self.scrollView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.topMargin).inset(16)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.topMargin).inset(13)
             make.left.right.bottom.equalToSuperview()
         }
         self.cardView.snp.makeConstraints { (make) in

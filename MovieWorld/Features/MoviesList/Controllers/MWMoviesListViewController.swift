@@ -12,7 +12,11 @@ import SnapKit
 class MWMoviesListViewController: UIViewController {
     // MARK: - variables
     private var genres = [Genre]()
-    public var movies: [APIMovie] = []
+    public var movies: [APIMovie]? {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     // MARK: - gui variables
     private lazy var collectionView: UICollectionView = {
         var collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.flowLayout)
@@ -94,14 +98,14 @@ class MWMoviesListViewController: UIViewController {
 extension MWMoviesListViewController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
+        return movies?.count ?? 0
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = self.tableView.dequeueReusableCell(withIdentifier: MWMoviesListTableViewCell.reuseIdentifier, for: indexPath) as? MWMoviesListTableViewCell else { return UITableViewCell() }
         cell.genres = self.genres
         cell.backgroundColor = .white
         cell.selectionStyle = .none
-        cell.movie = movies[indexPath.row]
+        cell.movie = movies?[indexPath.row]
         /*
          let backGroundColor = UIView()
          backGroundColor.backgroundColor = .clear
