@@ -13,31 +13,34 @@ class MWPersistenceService {
     // MARK: - variables
     static let shared = MWPersistenceService()
     var context: NSManagedObjectContext { return persistentContainer.viewContext }
-    lazy var persistentContainer: NSPersistentContainer = {
-        let conteiner = NSPersistentContainer(name: "MWGenresList")
-        conteiner.loadPersistentStores(completionHandler: { (storeDescription, error) in
+    private lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "MWGenresList")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                print("Unresolved error \(error), \(error.userInfo)")
             }
         })
-        return conteiner
+        return container
     }()
+    
     // MARK: - initialization
     private init() {
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
-    // MARK: - setters / helpers / actions / handlers / utility
-    func save(completion: @escaping () ->Void) {
+    
+    // MARK: - helpers
+    func save(completion: @escaping () -> Void) {
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
                 completion()
             } catch {
-                fatalError("Unresolved error \(error)")
+                print("Unresolved error \(error)")
             }
         }
     }
+    
     func fetch<T: NSManagedObject>(_ type: T.Type, completion: @escaping ([T]) ->Void) {
         let request = NSFetchRequest<T>(entityName: String(describing: type))
         do {
@@ -46,29 +49,6 @@ class MWPersistenceService {
         } catch {
             print(error)
             completion([])
-        }
-    }
-    // MARK: - request
-    func requestGenres(completion: @escaping ([Genre]) -> Void) {
-        MWNetwork.shared.request(url: "genre/movie/list", okHandler: { [weak self] (data: APIGenres, response) in
-            guard let self = self else { return }
-            data.genres.forEach {
-                let genre = Genre(context: self.context)
-                genre.id = Int32($0.id)
-                genre.name = $0.name
-            }
-            let group = DispatchGroup()
-            group.enter()
-            DispatchQueue.main.async {
-                self.save {
-                    self.fetch(Genre.self, completion: { (genres) in
-                        completion(genres)
-                        group.leave()
-                    })
-                }
-            }
-        }) { (error, response) in
-            print(error.localizedDescription)
         }
     }
 }

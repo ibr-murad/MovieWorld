@@ -10,4 +10,5 @@ import Foundation
 import CoreData
 
 public class Genre: NSManagedObject {
+    
 }

@@ -11,11 +11,14 @@ import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    // MARK: - variables
     var window: UIWindow?
     
+    // MARK: - setters
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        MWI.shared.setup(window: self.window!)
+        guard let window = self.window else { return false}
+        MWI.shared.setup(window: window)
         return true
     }
 }

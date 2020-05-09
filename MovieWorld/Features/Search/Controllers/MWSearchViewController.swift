@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class MWSearchViewController: UIViewController {
+class MWSearchViewController: MWBaseViewController {
     // MARK: - variables
     // MARK: - gui variables
     // MARK: - view life cycle

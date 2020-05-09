@@ -8,29 +8,35 @@
 
 import Foundation
 
+typealias Success<T> = (_ data: T, _ response: HTTPURLResponse?) -> Void
+typealias Failure = (_ error: MWError, _ response: HTTPURLResponse? ) -> Void
+
 class MWNetwork {
     // MARK: - variables
     static let shared = MWNetwork()
+    private var queue = DispatchQueue(label: "Network", qos: .background, attributes: .concurrent)
     private var session = URLSession.init(configuration: .default)
     private let baseUrl: String = "https://api.themoviedb.org/3/"
-    public static let imageBaseUrl: String = "https://image.tmdb.org/t/p/w200"
     private let api_key: String = "79d5894567be5b76ab7434fc12879584"
-    private var params: [String: String] = [:]
+    private var params: [String: String] = ["api_key": "79d5894567be5b76ab7434fc12879584"]
+    
     // MARK: - initialization
-    private init() {
-        params["api_key"] = self.api_key
-    }
+    private init() {}
+    
     // MARK: - request
     func request<T: Decodable>(url: String,
                                param: String? = nil,
-                               okHandler: @escaping (_ data: T, _ response: HTTPURLResponse?) -> Void,
-                               errorHandler: @escaping (_ error: MWError, _ response: HTTPURLResponse?) -> Void) {
+                               okHandler: @escaping Success<T>,
+                               errorHandler: @escaping Failure) {
         var fullPath = self.baseUrl + url
         fullPath = self.getUrlWithParams(fullPath: fullPath, params: self.params)
         if param != nil {
             fullPath = fullPath + (param ?? "")
         }
-        guard let url = URL(string: fullPath) else { return }
+        guard let url = URL(string: fullPath) else {
+            errorHandler(.incorrectUrl(url: fullPath), .none)
+            return
+        }
         let request = URLRequest(url: url)
         self.session.dataTask(with: request) { (data, response, error) in
             DispatchQueue.main.async {
@@ -43,22 +49,14 @@ class MWNetwork {
                 if let result = try? JSONDecoder().decode(T.self, from: data) {
                     okHandler(result, response)
                 } else {
-                    if let error = error {
-                        errorHandler(.parsingError(error: error ), response)
+                    if error != nil {
+                        errorHandler(.parsingError(error: error!), response)
+                    } else {
+                        errorHandler(.other(info: "parsing"), response)
                     }
                     return
                 }
             }
         }.resume()
     }
-}
-
-struct URLPath {
-    static let popular = "movie/popular"
-    static let upcoming = "movie/upcoming"
-    static let topRated = "movie/top_rated"
-    static let nowPlaing = "movie/now_playing"
-    static let genreTvList = "genre/tv/list"
-    static let genreMovieList = "genre/movie/list"
-    static let discoverMovie = "discover/movie"
 }

@@ -11,7 +11,8 @@ import SnapKit
 
 class MWMoviesListCollectionViewCell: UICollectionViewCell {
     // MARK: - variables
-    public static let reuseIdentifier = "categoryCollectionCell"
+    static let reuseIdentifier = "MWMoviesListCollectionViewCell"
+    
     // MARK: - gui variables
     private lazy var categoryLabel: UILabel = {
         let label = UILabel()
@@ -19,6 +20,7 @@ class MWMoviesListCollectionViewCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 13)
         return label
     }()
+    
     private lazy var conteinerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 5
@@ -27,17 +29,20 @@ class MWMoviesListCollectionViewCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.backgroundColor = .clear
         self.contentView.addSubview(self.conteinerView)
         self.conteinerView.addSubview(self.categoryLabel)
-        self.updateConstraints()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     // MARK: - constraints
     override func updateConstraints() {
         self.conteinerView.snp.updateConstraints { (make) in
@@ -48,8 +53,10 @@ class MWMoviesListCollectionViewCell: UICollectionViewCell {
         }
         super.updateConstraints()
     }
-    // MARK: - setters / helpers / actions / handlers / utility
-    public func setCategory(_ category: String) {
+    
+    // MARK: - setters
+    func setCategory(_ category: String) {
         self.categoryLabel.text = category
+        self.setNeedsUpdateConstraints()
     }
 }

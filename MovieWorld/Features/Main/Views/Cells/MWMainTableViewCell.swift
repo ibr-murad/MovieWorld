@@ -10,14 +10,15 @@ import UIKit
 
 class MWMainTableViewCell: UITableViewCell {
     // MARK: - variables
-    static let reuseIdentifier = "mainTableCell"
-    public var movies: [APIMovie] = []
-    public var title: String? {
+    static let reuseIdentifier = "MWMainTableViewCell"
+    var movies: [APIMovie] = []
+    var title: String? {
         didSet {
             self.label.text = self.title
         }
     }
-    private let sectionConstaints = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
+    private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
+    
     // MARK: - gui variables
     private lazy var newContentView: UIView = {
         var view = UIView()
@@ -25,6 +26,7 @@ class MWMainTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
     private lazy var label: UILabel = {
         var label = UILabel()
         label.text = "New"
@@ -32,20 +34,16 @@ class MWMainTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private lazy var button: UIButton = {
-        var button = UIButton()
-        button.setTitle("All ", for: .normal)
-        button.setImage(UIImage(named: "nextArrow"), for: .normal)
-        button.semanticContentAttribute = .forceRightToLeft
-        button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 12, bottom: 4, right: 12)
-        button.backgroundColor = UIColor(named: "mainAllButtonColor")
-        button.layer.cornerRadius = 5
+    
+    private lazy var button: MWAllButton = {
+        var button = MWAllButton()
+        button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(allButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: self.makeLayout())
+        let collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: self.flowLayout)
         collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -54,53 +52,57 @@ class MWMainTableViewCell: UITableViewCell {
         collectionView.register(MWMainCollectionViewCell.self, forCellWithReuseIdentifier: MWMainCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
-    // MARK: - initialization
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.contentView.addSubview(self.newContentView)
-        self.newContentView.addSubview(self.label)
-        self.newContentView.addSubview(self.button)
-        self.newContentView.addSubview(self.collectionView)
-        self.updateConstraints()
-    }
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    // MARK: - constraints
-    override func updateConstraints() {
-        self.newContentView.snp.updateConstraints { (make) in
-            make.edges.equalToSuperview().inset(sectionConstaints)
-        }
-        self.label.snp.updateConstraints { (make) in
-            make.left.top.equalToSuperview()
-            make.bottom.equalTo(self.collectionView.snp.top).offset(-12)
-        }
-        self.button.snp.updateConstraints { (make) in
-            make.top.equalToSuperview().inset(4)
-            make.right.equalToSuperview().inset(8)
-            make.bottom.equalTo(self.collectionView.snp.top).offset(-16)
-        }
-        self.collectionView.snp.updateConstraints { (make) in
-            make.left.right.bottom.equalToSuperview()
-        }
-        super.updateConstraints()
-    }
-    // MARK: - setters / helpers / actions / handlers / utility
-    private func makeLayout() -> UICollectionViewFlowLayout {
+    
+    private lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 130, height: 225)
         return layout
+    }()
+    
+    // MARK: - initialization
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.backgroundColor = .white
+        self.selectionStyle = .none
+        
+        self.contentView.addSubview(self.newContentView)
+        self.newContentView.addSubview(self.label)
+        self.newContentView.addSubview(self.button)
+        self.newContentView.addSubview(self.collectionView)
+        
+        self.setNeedsUpdateConstraints()
     }
-    @objc private func allButtonTapped(_ sender: UIButton) {
-        let moviesListController = MWMoviesListViewController()
-        moviesListController.movies = self.movies
-        MWI.shared.pushVC(vc: moviesListController)
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - constraints
+    override func updateConstraints() {
+        self.newContentView.snp.updateConstraints { (make) in
+            make.edges.equalToSuperview().inset(self.sectionInsets)
+        }
+        self.label.snp.updateConstraints { (make) in
+            make.left.top.equalToSuperview()
+            make.right.lessThanOrEqualTo(self.button.snp.left)
+        }
+        self.button.snp.updateConstraints { (make) in
+            make.top.equalToSuperview().inset(4)
+            make.right.equalToSuperview().inset(8)
+        }
+        self.collectionView.snp.updateConstraints { (make) in
+            make.top.equalTo(self.label.snp.bottom).offset(12)
+            make.top.equalTo(self.button.snp.bottom).offset(16)
+            make.left.right.bottom.equalToSuperview()
+        }
+        super.updateConstraints()
     }
 }
 
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension MWMainTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
-    // MARK: - UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return movies.count
     }

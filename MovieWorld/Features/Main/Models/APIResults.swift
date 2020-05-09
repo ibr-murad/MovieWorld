@@ -14,8 +14,12 @@ struct APIResults: Decodable {
     let numResults: Int
     let numPages: Int
     let movies: [APIMovie]
+    
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
-        case page, numResults = "total_results", numPages = "total_pages", movies = "results"
+        case page,
+        numResults = "total_results",
+        numPages = "total_pages",
+        movies = "results"
     }
 }

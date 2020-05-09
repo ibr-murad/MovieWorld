@@ -1,19 +1,18 @@
 //
-//  MWCastView.swift
+//  MWGalleryView.swift
 //  MovieWorld
 //
-//  Created by Murad Ibrohimov on 4/26/20.
+//  Created by Murad Ibrohimov on 5/8/20.
 //  Copyright © 2020 Murad. All rights reserved.
 //
 
 import UIKit
 import SnapKit
 
-class MWCastView: UIView {
+class MWGalleryView: UIView {
     // MARK: - variables
-    var movie: APIMovie? 
-    private var cast: [APIActor] = []
-    
+    var movie: APIMovie?
+    private var gallery: [APIImage] = []
     private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     
     // MARK: - gui variables
@@ -26,17 +25,10 @@ class MWCastView: UIView {
     
     private lazy var label: UILabel = {
         var label = UILabel()
-        label.text = "Cast"
+        label.text = "Trailers and gallery"
         label.font = .boldSystemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
-    }()
-    
-    private lazy var button: MWAllButton = {
-        var button = MWAllButton()
-        button.isEnabled = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
     }()
     
     private lazy var collectionView: UICollectionView = {
@@ -46,14 +38,14 @@ class MWCastView: UIView {
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(MWCastCollectionViewCell.self, forCellWithReuseIdentifier: MWCastCollectionViewCell.reuseIdentifier)
+        collectionView.register(MWGalleryCollectionViewCell.self, forCellWithReuseIdentifier: MWGalleryCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
     
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 72, height: 120)
+        layout.itemSize = CGSize(width: 180, height: 87)
         return layout
     }()
     
@@ -63,12 +55,9 @@ class MWCastView: UIView {
         
         self.addSubview(self.newContentView)
         self.newContentView.addSubview(self.label)
-        self.newContentView.addSubview(self.button)
         self.newContentView.addSubview(self.collectionView)
         
         self.fetchCast()
-        
-        self.setNeedsUpdateConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -79,30 +68,27 @@ class MWCastView: UIView {
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
             make.edges.equalToSuperview().inset(self.sectionInsets)
-            make.height.equalTo(170)
+            make.height.equalTo(130)
         }
         self.label.snp.updateConstraints { (make) in
             make.top.left.equalToSuperview()
-            make.right.lessThanOrEqualTo(self.button.snp.left)
-        }
-        self.button.snp.updateConstraints { (make) in
-            make.top.equalToSuperview().inset(4)
-            make.right.equalToSuperview().inset(8)
+            make.right.lessThanOrEqualToSuperview()
         }
         self.collectionView.snp.updateConstraints { (make) in
-            make.top.equalTo(self.label.snp.bottom).offset(12)
-            make.top.equalTo(self.button.snp.bottom).offset(16)
+            make.top.equalTo(self.label.snp.bottom).offset(16)
             make.left.right.bottom.equalToSuperview()
         }
+        
         super.updateConstraints()
     }
     
     private func fetchCast() {
         let group = DispatchGroup()
         group.enter()
-        MWNetwork.shared.request(url: "movie/\(self.movie?.id ?? 481848)/credits", okHandler: { (data: APICast, response) in
-            self.cast = data.cast
-            group.leave()
+        MWNetwork.shared.request(url: "movie/\(self.movie?.id ?? 481848)/images",
+            okHandler: { (data: APIGallery, response) in
+                self.gallery = data.backdrops
+                group.leave()
         }) { (error, response) in
             print(error)
             group.leave()
@@ -115,13 +101,14 @@ class MWCastView: UIView {
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
-extension MWCastView: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MWGalleryView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cast.count
+        return self.gallery.count
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: MWCastCollectionViewCell.reuseIdentifier, for: indexPath) as? MWCastCollectionViewCell else { return UICollectionViewCell() }
-        cell.actor = self.cast[indexPath.row]
+        guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: MWGalleryCollectionViewCell.reuseIdentifier, for: indexPath) as? MWGalleryCollectionViewCell else { return UICollectionViewCell() }
+        cell.imageFormApi = self.gallery[indexPath.row]
         return cell
     }
 }
