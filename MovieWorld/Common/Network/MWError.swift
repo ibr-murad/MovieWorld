@@ -6,8 +6,6 @@
 //  Copyright © 2020 Murad. All rights reserved.
 //
 
-import Foundation
-
 enum MWError: Error {
     case networkError(error: Error)
     case parsingError(error: Error)

@@ -9,25 +9,25 @@
 import UIKit
 import SnapKit
 
-class MWMoviesListCollectionViewCell: UICollectionViewCell {
+class MWGroupstCollectionViewCell: UICollectionViewCell {
     // MARK: - variables
-    static let reuseIdentifier = "MWMoviesListCollectionViewCell"
+    static let reuseIdentifier = "MWGroupstCollectionViewCell"
     
     // MARK: - gui variables
-    private lazy var categoryLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 13)
-        return label
-    }()
-    
-    private lazy var conteinerView: UIView = {
+    lazy var conteinerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 5
         view.backgroundColor = UIColor(named: "accentColor")
         view.alpha = 0.5
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private lazy var categoryLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 13)
+        return label
     }()
     
     // MARK: - initialization

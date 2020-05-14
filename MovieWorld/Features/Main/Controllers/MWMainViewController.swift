@@ -25,7 +25,8 @@ class MWMainViewController: MWBaseViewController {
         tableView.rowHeight = 305
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(MWMainTableViewCell.self, forCellReuseIdentifier: MWMainTableViewCell.reuseIdentifier)
+        tableView.register(MWMainTableViewCell.self,
+                           forCellReuseIdentifier: MWMainTableViewCell.reuseIdentifier)
         tableView.tableFooterView = UIView()
         tableView.refreshControl = self.refreshControl
         return tableView
@@ -55,7 +56,7 @@ class MWMainViewController: MWBaseViewController {
     
     // MARK: - setters
     private func setupController() {
-        self.controllerTitle = "Season"
+        self.controllerTitle = NSLocalizedString("mainController", comment: "")
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
@@ -78,20 +79,20 @@ class MWMainViewController: MWBaseViewController {
     // MARK: - request
     private func fillArrays(completion: @escaping () -> Void) {
         let group = DispatchGroup()
-        
         for section in self.requestUrlPaths {
             group.enter()
-            MWNetwork.shared.request(url: section.urlPath, okHandler: { [weak self] (data: APIResults, response) in
-                guard let self = self else { return }
-                self.results.append(data)
-                self.resultsTitles.append(section.title)
-                group.leave()
+            MWNetwork.shared.request(
+                url: section.urlPath,
+                okHandler: { [weak self] (data: APIResults, response) in
+                    guard let self = self else { return }
+                    self.results.append(data)
+                    self.resultsTitles.append(section.title)
+                    group.leave()
             }) { (error, response) in
                 print(error)
                 group.leave()
             }
         }
-
         group.notify(queue: .main) {
             self.tableView.reloadData()
             completion()
@@ -107,14 +108,14 @@ extension MWMainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = self.tableView.dequeueReusableCell(withIdentifier: MWMainTableViewCell.reuseIdentifier, for: indexPath) as? MWMainTableViewCell else { return UITableViewCell() }
-        cell.movies = self.results[indexPath.row].movies
-        cell.title = self.resultsTitles[indexPath.row]
+        cell.initCell(title: self.resultsTitles[indexPath.row], moives: self.results[indexPath.row].movies)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let moviesListController = MWMoviesListViewController()
-        moviesListController.movies = self.results[indexPath.row].movies
+        moviesListController.controllerTitle = self.resultsTitles[indexPath.row]
+        moviesListController.initController(url: self.requestUrlPaths[indexPath.row].urlPath, params: [:])
         MWI.shared.pushVC(vc: moviesListController)
     }
 }

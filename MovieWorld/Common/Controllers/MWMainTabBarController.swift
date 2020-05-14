@@ -7,25 +7,30 @@
 //
 
 import UIKit
-import SnapKit
 
 class MWMainTabBarController: UITabBarController {
     // MARK: - gui variables
     private lazy var mainTab: MWMainViewController = {
         let controller = MWMainViewController()
-        controller.tabBarItem = UITabBarItem(title: "Main", image: UIImage(named: "mainTab"), tag: 0)
+        controller.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("mainTab", comment: ""),
+            image: UIImage(named: "mainTab"), tag: 0)
         return controller
     }()
     
     private lazy var categoryTab: MWCategoryViewControler = {
         let controller = MWCategoryViewControler()
-        controller.tabBarItem = UITabBarItem(title: "Gategory", image: UIImage(named: "categoryTab"), tag: 1)
+        controller.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("categoryTab", comment: ""),
+            image: UIImage(named: "categoryTab"), tag: 1)
         return controller
     }()
     
     private lazy var searchTab: MWSearchViewController = {
         let controller = MWSearchViewController()
-        controller.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "searchTab"), tag: 2)
+        controller.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("searchTab", comment: ""),
+            image: UIImage(named: "searchTab"), tag: 2)
         return controller
     }()
     
@@ -34,7 +39,6 @@ class MWMainTabBarController: UITabBarController {
         super.viewDidLoad()
         
         let tabs = [self.mainTab, self.categoryTab, self.searchTab]
-        //create and set UINavigationController for each viewController
         self.viewControllers = tabs.map { UINavigationController(rootViewController: $0)}
         self.tabBarStyle()
     }

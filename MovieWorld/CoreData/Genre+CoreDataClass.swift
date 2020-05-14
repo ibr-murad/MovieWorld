@@ -6,9 +6,6 @@
 //
 //
 
-import Foundation
 import CoreData
 
-public class Genre: NSManagedObject {
-    
-}
+public class Genre: NSManagedObject {}

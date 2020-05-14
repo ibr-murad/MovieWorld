@@ -7,6 +7,7 @@
 //
 
 struct MWURLPath {
+    // MARK: - constants
     static let popular = "movie/popular"
     static let upcoming = "movie/upcoming"
     static let topRated = "movie/top_rated"

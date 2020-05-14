@@ -11,15 +11,15 @@ import UIKit
 class MWMainTableViewCell: UITableViewCell {
     // MARK: - variables
     static let reuseIdentifier = "MWMainTableViewCell"
-    var movies: [APIMovie] = []
-    var title: String? {
+    private var movies: [APIMovie] = []
+    private var title: String? {
         didSet {
             self.label.text = self.title
         }
     }
-    private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     
     // MARK: - gui variables
+    private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     private lazy var newContentView: UIView = {
         var view = UIView()
         view.backgroundColor = .none
@@ -79,6 +79,11 @@ class MWMainTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func initCell(title: String, moives: [APIMovie]) {
+        self.movies = moives
+        self.title = title
+    }
+    
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -97,6 +102,7 @@ class MWMainTableViewCell: UITableViewCell {
             make.top.equalTo(self.button.snp.bottom).offset(16)
             make.left.right.bottom.equalToSuperview()
         }
+        
         super.updateConstraints()
     }
 }
@@ -106,9 +112,16 @@ extension MWMainTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return movies.count
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: MWMainCollectionViewCell.reuseIdentifier, for: indexPath) as? MWMainCollectionViewCell else { return UICollectionViewCell() }
-        cell.movie = self.movies[indexPath.row]
+        cell.initCell(movie: self.movies[indexPath.row])
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let deteilController = MWDetailsViewConroller()
+        deteilController.initController(movieId: self.movies[indexPath.row].id)
+        MWInterface.shared.pushVC(vc: deteilController)
     }
 }

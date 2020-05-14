@@ -17,6 +17,11 @@ struct APIActor: Decodable {
     
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
-        case id, character, name, photo = "profile_path", creditId = "credit_id", gender
+        case id,
+        character,
+        name,
+        photo = "profile_path",
+        creditId = "credit_id",
+        gender
     }
 }

@@ -11,11 +11,15 @@ import SnapKit
 
 class MWGalleryView: UIView {
     // MARK: - variables
-    var movie: APIMovie?
+    private var movie: APIMovieDetails? {
+        didSet {
+            self.fetchGallery()
+        }
+    }
     private var gallery: [APIImage] = []
-    private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     
     // MARK: - gui variables
+    private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     private lazy var newContentView: UIView = {
         var view = UIView()
         view.backgroundColor = .none
@@ -25,7 +29,7 @@ class MWGalleryView: UIView {
     
     private lazy var label: UILabel = {
         var label = UILabel()
-        label.text = "Trailers and gallery"
+        label.text = NSLocalizedString("gallery", comment: "")
         label.font = .boldSystemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -56,12 +60,14 @@ class MWGalleryView: UIView {
         self.addSubview(self.newContentView)
         self.newContentView.addSubview(self.label)
         self.newContentView.addSubview(self.collectionView)
-        
-        self.fetchCast()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func initView(movie: APIMovieDetails) {
+        self.movie = movie
     }
     
     // MARK: - constraints
@@ -82,20 +88,14 @@ class MWGalleryView: UIView {
         super.updateConstraints()
     }
     
-    private func fetchCast() {
-        let group = DispatchGroup()
-        group.enter()
+    private func fetchGallery() {
         MWNetwork.shared.request(url: "movie/\(self.movie?.id ?? 481848)/images",
-            okHandler: { (data: APIGallery, response) in
+            okHandler: { [weak self] (data: APIGallery, response) in
+                guard let self = self else { return }
                 self.gallery = data.backdrops
-                group.leave()
+                self.collectionView.reloadData()
         }) { (error, response) in
             print(error)
-            group.leave()
-        }
-        
-        group.notify(queue: .main) {
-            self.collectionView.reloadData()
         }
     }
 }

@@ -13,8 +13,12 @@ import Kingfisher
 class MWMoviesListTableViewCell: UITableViewCell {
     // MARK: - variables
     static let reuseIdentifier = "MWMoviesListTableViewCell"
-    var genres: [Genre] = []
-    var movie: APIMovie? {
+    private var movie: APIMovie? {
+        didSet {
+            self.requestForMovieDetail()
+        }
+    }
+    private var movieDetails: APIMovieDetails? {
         didSet {
             self.setup()
         }
@@ -99,6 +103,10 @@ class MWMoviesListTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func initView(movie: APIMovie) {
+        self.movie = movie
+    }
+    
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -136,7 +144,7 @@ class MWMoviesListTableViewCell: UITableViewCell {
     
     // MARK: - setters
     private func setup() {
-        guard let movie = self.movie else { return }
+        guard let movie = self.movieDetails else { return }
         if let posterPath = movie.posterPath {
             guard let imageURL = URL(string: (BaseUrl.poster + posterPath)) else { return }
             self.posterImageView.kf.indicatorType = .activity
@@ -150,10 +158,33 @@ class MWMoviesListTableViewCell: UITableViewCell {
                 ])
         }
         self.nameLabel.text = movie.title
-        self.yearCountryLabel.text = String(movie.releaseDate.prefix(4))
-        self.genresLabel.text = "\(movie.genres)"
-        self.ratingLabel.text = "\(movie.rating)"
+        if movie.countries.count > 0 {
+            self.yearCountryLabel.text = "\(movie.releaseDate.prefix(4)), " + movie.countries[0].name
+        } else {
+            self.yearCountryLabel.text = "\(movie.releaseDate.prefix(4))"
+        }
+        var text = ""
+        for i in 0..<movie.genres.count {
+            text += movie.genres[i].name
+            if i != movie.genres.count-1 {
+                text += ", "
+            }
+        }
+        self.genresLabel.text = text
+        self.ratingLabel.text = "IMDB \(movie.rating)"
         
+        self.setNeedsUpdateConstraints()
+    }
+    
+    // MARK: - request
+    private func requestForMovieDetail() {
+        MWNetwork.shared.request(url: "movie/\(self.movie?.id ?? 0)",
+            okHandler: { [weak self] (data: APIMovieDetails, response) in
+                guard let self = self else { return }
+                self.movieDetails = data
+        }) { (error, response) in
+            print(error)
+        }
         self.setNeedsUpdateConstraints()
     }
 }

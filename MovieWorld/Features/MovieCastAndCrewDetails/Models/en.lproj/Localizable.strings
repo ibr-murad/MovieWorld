@@ -1,0 +1,36 @@
+/* 
+  Localizable.strings
+  MovieWorld
+
+  Created by Murad Ibrohimov on 5/14/20.
+  Copyright © 2020 Murad. All rights reserved.
+*/
+
+// MARK: - api language
+"en" = "en";
+
+// MARK: - tabBar titles
+"mainTab" = "Main";
+"categoryTab" = "Category";
+"searchTab" = "Search";
+
+// MARK: - controllers titles
+"mainController" = "Season";
+"categoryController" = "Category";
+"searchController" = "Search";
+"castController" = "Cast";
+
+// MARK: - main controller sections titles
+"nowPlaing" = "Now plaing";
+"popular" = "Popular";
+"topRated" = "Top rated";
+"upcoming" = "Upcoming";
+
+
+// MARK: - gui variables text
+"allButton" = "All ";
+"description" = "Description";
+"cast" = "Cast";
+"gallery" = "Gallery";
+"filmography" = "Filmography";
+"biography" = "Biography";

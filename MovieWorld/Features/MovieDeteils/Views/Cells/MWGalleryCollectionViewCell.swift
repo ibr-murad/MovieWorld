@@ -12,7 +12,6 @@ import Kingfisher
 class MWGalleryCollectionViewCell: UICollectionViewCell {
     // MARK: - variables
     static let reuseIdentifier = "MWGalleryCollectionViewCell"
-    private var genres: [Genre] = []
     var imageFormApi: APIImage? {
         didSet{
             self.setup()
@@ -44,15 +43,14 @@ class MWGalleryCollectionViewCell: UICollectionViewCell {
     // MARK: - constraints
     override func updateConstraints() {
         self.imageView.snp.updateConstraints { (make) in
-            make.top.left.right.bottom.equalToSuperview()
-            //make.size.lessThanOrEqualTo(CGSize(width: 179, height: 86))
+            make.edges.equalToSuperview()
         }
         
         super.updateConstraints()
     }
     
     // MARK: - setters
-    func setup() {
+    private func setup() {
         guard let image = self.imageFormApi else { return }
         guard let imageURL = URL(string: (BaseUrl.backdrop + image.path)) else { return }
         self.imageView.kf.indicatorType = .activity

@@ -14,13 +14,13 @@ enum MWMainSections {
     func getSectionModel() -> MWMainSection {
         switch self {
         case .nowPlaying:
-            return MWMainSection(title: "Now playing", urlPath: MWURLPath.nowPlaing)
+            return MWMainSection(title: NSLocalizedString("nowPlaing", comment: ""), urlPath: MWURLPath.nowPlaing)
         case .popular:
-            return MWMainSection(title: "Popular", urlPath: MWURLPath.popular)
+            return MWMainSection(title: NSLocalizedString("popular", comment: ""), urlPath: MWURLPath.popular)
         case .topRated:
-            return MWMainSection(title: "Top Rated", urlPath: MWURLPath.topRated)
+            return MWMainSection(title: NSLocalizedString("topRated", comment: ""), urlPath: MWURLPath.topRated)
         case .upcoming:
-            return MWMainSection(title: "Upcoming", urlPath: MWURLPath.upcoming)
+            return MWMainSection(title: NSLocalizedString("upcoming", comment: ""), urlPath: MWURLPath.upcoming)
         }
     }
 }

@@ -11,7 +11,7 @@ import SnapKit
 
 class MWDescription: UIView {
     // MARK: - variables
-    var movie: APIMovie? {
+    private var movie: APIMovieDetails? {
         didSet {
             self.setup()
         }
@@ -20,7 +20,7 @@ class MWDescription: UIView {
     // MARK: - gui variables
     private lazy var titleLabel: UILabel = {
         var label = UILabel()
-        label.text = "Description"
+        label.text = NSLocalizedString("description", comment: "")
         label.font = .boldSystemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -78,6 +78,10 @@ class MWDescription: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func initView(movie: APIMovieDetails) {
+        self.movie = movie
+    }
+    
     // MARK: - constraints
     override func updateConstraints() {
         self.titleLabel.snp.updateConstraints { (make) in
@@ -106,6 +110,13 @@ class MWDescription: UIView {
     // MARK: - setters
     private func setup() {
         self.descriptionLabel.text = self.movie?.overview
+        if self.movie?.adult ?? false {
+            self.ageLabel.text = "18+"
+        } else {
+            self.ageLabel.text = "12+"
+        }
+        self.timingLabel.text = "\(self.movie?.runtime ?? 0)"
+        
         self.setNeedsUpdateConstraints()
     }
 }

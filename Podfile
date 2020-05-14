@@ -10,5 +10,6 @@ target 'MovieWorld' do
   pod 'Kingfisher', '~> 5.0'
   pod 'YouTubePlayer'
   pod 'XCDYouTubeKit'
+  pod 'Reveal-SDK', configurations: ['Debug']
 
 end

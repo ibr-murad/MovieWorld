@@ -11,12 +11,15 @@ import SnapKit
 
 class MWCastView: UIView {
     // MARK: - variables
-    var movie: APIMovie? 
+    private var movie: APIMovieDetails? {
+        didSet {
+            self.fetchCast()
+        }
+    }
     private var cast: [APIActor] = []
     
-    private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
-    
     // MARK: - gui variables
+    private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     private lazy var newContentView: UIView = {
         var view = UIView()
         view.backgroundColor = .none
@@ -26,7 +29,7 @@ class MWCastView: UIView {
     
     private lazy var label: UILabel = {
         var label = UILabel()
-        label.text = "Cast"
+        label.text = NSLocalizedString("cast", comment: "")
         label.font = .boldSystemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -65,14 +68,14 @@ class MWCastView: UIView {
         self.newContentView.addSubview(self.label)
         self.newContentView.addSubview(self.button)
         self.newContentView.addSubview(self.collectionView)
-        
-        self.fetchCast()
-        
-        self.setNeedsUpdateConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func initView(movie: APIMovieDetails) {
+        self.movie = movie
     }
     
     // MARK: - constraints
@@ -98,18 +101,14 @@ class MWCastView: UIView {
     }
     
     private func fetchCast() {
-        let group = DispatchGroup()
-        group.enter()
-        MWNetwork.shared.request(url: "movie/\(self.movie?.id ?? 481848)/credits", okHandler: { (data: APICast, response) in
-            self.cast = data.cast
-            group.leave()
+        MWNetwork.shared.request(
+            url: "movie/\(self.movie?.id ?? 481848)/credits",
+            okHandler: { [weak self] (data: APICast, response) in
+                guard let self = self else { return }
+                self.cast = data.cast
+                self.collectionView.reloadData()
         }) { (error, response) in
             print(error)
-            group.leave()
-        }
-        
-        group.notify(queue: .main) {
-            self.collectionView.reloadData()
         }
     }
 }

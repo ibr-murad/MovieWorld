@@ -8,7 +8,7 @@
 typealias BaseUrl = MWImagesBaseURL
 
 struct MWImagesBaseURL {
-    // MARK: - variables
+    // MARK: - constants
     static let profile: String = "https://image.tmdb.org/t/p/w185"
     static let poster: String = "https://image.tmdb.org/t/p/w342"
     static let backdrop: String = "https://image.tmdb.org/t/p/w780"

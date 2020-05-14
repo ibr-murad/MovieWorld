@@ -18,6 +18,7 @@ struct APIMovieDetails: Decodable {
     let genres: [APIGenre]
     let runtime: Int?
     let adult: Bool
+    let countries: [APIProductionCountries]
     
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
@@ -29,6 +30,7 @@ struct APIMovieDetails: Decodable {
         overview,
         genres,
         runtime,
-        adult
+        adult,
+        countries = "production_countries"
     }
 }

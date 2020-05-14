@@ -10,9 +10,10 @@ struct APICast: Decodable {
     // MARK: - variables
     let id: Int
     let cast: [APIActor]
+    let crew: [APICredit]
     
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
-        case id, cast
+        case id, cast, crew
     }
 }

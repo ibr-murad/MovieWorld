@@ -10,6 +10,13 @@ import UIKit
 import SnapKit
 
 class MWFilmView: UIView {
+    // MARK: - variables
+    private var movie: APIMovieDetails? {
+        didSet {
+            self.setup()
+        }
+    }
+    
     // MARK: - gui variables
     private lazy var videoImage: UIImageView = {
         var image = UIImageView()
@@ -17,6 +24,10 @@ class MWFilmView: UIView {
         image.layer.cornerRadius = 5
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
+        image.isUserInteractionEnabled = true
+        image.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: #selector(self.playImageTapped)))
         return image
     }()
     
@@ -67,14 +78,14 @@ class MWFilmView: UIView {
         self.addSubview(self.likeLabel)
         self.addSubview(self.dislikeImage)
         self.addSubview(self.dislikeLabel)
-        
-        videoImage.isUserInteractionEnabled = true
-        videoImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.playImageTapped)))
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func initView(movie: APIMovieDetails) {
+        self.movie = movie
     }
     
     // MARK: - constraints
@@ -108,9 +119,23 @@ class MWFilmView: UIView {
         super.updateConstraints()
     }
     
+    private func setup() {
+        guard let movie = self.movie else { return }
+        guard let imageURL = URL(string: (BaseUrl.backdrop + (movie.backdrop ?? "" ))) else { return }
+        self.videoImage.kf.indicatorType = .activity
+        self.videoImage.kf.setImage(
+            with: imageURL,
+            placeholder: .none,
+            options: [
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(1)),
+                .cacheOriginalImage
+            ])
+        self.setNeedsUpdateConstraints()
+    }
+    
     // MARK: - actions
     @objc func playImageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
         NotificationCenter.default.post(name: .presentPlayerViewController, object: nil)
-        print("TAPPED")
     }
 }

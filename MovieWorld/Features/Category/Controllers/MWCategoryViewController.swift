@@ -28,6 +28,7 @@ class MWCategoryViewControler: MWBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setupController()
         self.view.addSubview(tableView)
         self.makeConstraintsForTableView()
         MWSystem.shared.requestGenres { [weak self] (data) in
@@ -46,7 +47,7 @@ class MWCategoryViewControler: MWBaseViewController {
     
     // MARK: - setters
     private func setupController() {
-        self.controllerTitle = "Category"
+        self.controllerTitle = NSLocalizedString("categoryController", comment: "")
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
@@ -70,14 +71,9 @@ extension MWCategoryViewControler: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let moviesListController = MWMoviesListViewController()
-        MWNetwork.shared.request(
-            url: MWURLPath.discoverMovie,
-            param: "&with_genres=\(self.genres[indexPath.row].id)",
-            okHandler: { (data: APIResults, response) in
-                moviesListController.movies = data.movies
-        }) { (error, response) in
-            print(error.localizedDescription)
-        }
+        moviesListController.controllerTitle = self.genres[indexPath.row].name.capitalizingFirstLetter()
+        moviesListController.initController(url: MWURLPath.discoverMovie,
+                                            params: ["with_genres": "\(self.genres[indexPath.row].id)"])
         MWI.shared.pushVC(vc: moviesListController)
     }
 }

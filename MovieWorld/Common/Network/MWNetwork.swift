@@ -18,21 +18,22 @@ class MWNetwork {
     private var session = URLSession.init(configuration: .default)
     private let baseUrl: String = "https://api.themoviedb.org/3/"
     private let api_key: String = "79d5894567be5b76ab7434fc12879584"
-    private var params: [String: String] = ["api_key": "79d5894567be5b76ab7434fc12879584"]
+    private var params: [String: String] = ["api_key": "79d5894567be5b76ab7434fc12879584",
+                                            "language": NSLocalizedString("en", comment: "")]
     
     // MARK: - initialization
     private init() {}
     
     // MARK: - request
     func request<T: Decodable>(url: String,
-                               param: String? = nil,
+                               params: [String: String]? = nil,
                                okHandler: @escaping Success<T>,
                                errorHandler: @escaping Failure) {
+        if let params = params {
+            self.params.merge(params) { (_, new) in new }
+        }
         var fullPath = self.baseUrl + url
         fullPath = self.getUrlWithParams(fullPath: fullPath, params: self.params)
-        if param != nil {
-            fullPath = fullPath + (param ?? "")
-        }
         guard let url = URL(string: fullPath) else {
             errorHandler(.incorrectUrl(url: fullPath), .none)
             return

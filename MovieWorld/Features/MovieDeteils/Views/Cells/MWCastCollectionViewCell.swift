@@ -62,7 +62,7 @@ class MWCastCollectionViewCell: UICollectionViewCell {
    override func updateConstraints() {
         self.image.snp.updateConstraints { (make) in
             make.top.left.right.equalToSuperview()
-            //make.size.equalTo(CGSize(width: 130, height: 180))
+            make.size.equalTo(CGSize(width: 72, height: 72))
         }
         self.title.snp.updateConstraints { (make) in
             make.top.equalTo(self.image.snp.bottom).offset(12)

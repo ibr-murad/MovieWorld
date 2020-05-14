@@ -13,7 +13,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
     // MARK: - variables
     static let reuseIdentifier = "MWMainCollectionViewCell"
     private var genres: [Genre] = []
-    var movie: APIMovie? {
+    private var movie: APIMovie? {
         didSet {
             self.setup()
         }
@@ -48,6 +48,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         MWSystem.shared.requestGenres { [weak self] (data) in
             guard let self = self else { return }
             self.genres = data
@@ -59,6 +60,10 @@ class MWMainCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func initCell(movie: APIMovie) {
+        self.movie = movie
     }
     
     // MARK: - constraints
@@ -75,6 +80,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(self.title.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
+        
         super.updateConstraints()
     }
     

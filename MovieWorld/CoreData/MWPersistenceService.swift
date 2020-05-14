@@ -6,7 +6,6 @@
 //  Copyright © 2020 Murad. All rights reserved.
 //
 
-import Foundation
 import CoreData
 
 class MWPersistenceService {

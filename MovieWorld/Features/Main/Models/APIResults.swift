@@ -6,20 +6,18 @@
 //  Copyright © 2020 Murad. All rights reserved.
 //
 
-import Foundation
-
 struct APIResults: Decodable {
     // MARK: - variables
     let page: Int
-    let numResults: Int
-    let numPages: Int
+    let totalResults: Int
+    let totalPages: Int
     let movies: [APIMovie]
     
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case page,
-        numResults = "total_results",
-        numPages = "total_pages",
+        totalResults = "total_results",
+        totalPages = "total_pages",
         movies = "results"
     }
 }

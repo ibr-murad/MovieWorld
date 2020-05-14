@@ -6,10 +6,6 @@
 //  Copyright © 2020 Murad. All rights reserved.
 //
 
-enum GenresListType: String {
-    case tv, movie
-}
-
 struct APIGenres: Decodable {
     // MARK: - variables
     let genres: [APIGenre]

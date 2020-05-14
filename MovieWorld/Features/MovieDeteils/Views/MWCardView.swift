@@ -11,7 +11,7 @@ import SnapKit
 
 class MWCardView: UIView {
     // MARK: - variables
-    var movie: APIMovie? {
+    private var movie: APIMovieDetails? {
         didSet {
             self.setup()
         }
@@ -87,9 +87,12 @@ class MWCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func initView(movie: APIMovieDetails) {
+        self.movie = movie
+    }
+    
     // MARK: - constraints
     override func updateConstraints() {
-        
         self.posterImageView.snp.updateConstraints { (make) in
             make.top.equalToSuperview().inset(10)
             make.left.equalToSuperview().offset(16)
@@ -136,11 +139,21 @@ class MWCardView: UIView {
                     .cacheOriginalImage
                 ])
         }
-        
         self.nameLabel.text = movie.title
-        self.yearCountryLabel.text = String(movie.releaseDate.prefix(4))
-        self.genresLabel.text = "\(movie.genres)"
-        self.ratingLabel.text = "\(movie.rating)"
+        if movie.countries.count > 0 {
+            self.yearCountryLabel.text = "\(movie.releaseDate.prefix(4)), " + movie.countries[0].name
+        } else {
+            self.yearCountryLabel.text = "\(movie.releaseDate.prefix(4))"
+        }
+        var text = ""
+        for i in 0..<movie.genres.count {
+            text += movie.genres[i].name
+            if i != movie.genres.count-1 {
+                text += ", "
+            }
+        }
+        self.genresLabel.text = text
+        self.ratingLabel.text = "IMDB \(movie.rating)"
         
         self.setNeedsUpdateConstraints()
     }
