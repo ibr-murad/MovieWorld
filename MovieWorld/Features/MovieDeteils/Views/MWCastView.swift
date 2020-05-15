@@ -49,7 +49,8 @@ class MWCastView: UIView {
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(MWCastCollectionViewCell.self, forCellWithReuseIdentifier: MWCastCollectionViewCell.reuseIdentifier)
+        collectionView.register(MWCastCollectionViewCell.self,
+                                forCellWithReuseIdentifier: MWCastCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
     
@@ -97,6 +98,7 @@ class MWCastView: UIView {
             make.top.equalTo(self.button.snp.bottom).offset(16)
             make.left.right.bottom.equalToSuperview()
         }
+        
         super.updateConstraints()
     }
     
@@ -119,8 +121,9 @@ extension MWCastView: UICollectionViewDelegate, UICollectionViewDataSource {
         return cast.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: MWCastCollectionViewCell.reuseIdentifier, for: indexPath) as? MWCastCollectionViewCell else { return UICollectionViewCell() }
-        cell.actor = self.cast[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MWCastCollectionViewCell.reuseIdentifier,
+                                                      for: indexPath)
+        (cell as? MWCastCollectionViewCell)?.initView(actor: self.cast[indexPath.row])
         return cell
     }
 }

@@ -13,7 +13,7 @@ class MWCastCollectionViewCell: UICollectionViewCell {
     // MARK: - variables
     static let reuseIdentifier = "MWCastCollectionViewCell"
     private var genres: [Genre] = []
-    var actor: APIActor? {
+    private var actor: APIActor? {
         didSet{
             self.setup()
         }
@@ -58,6 +58,10 @@ class MWCastCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func initView(actor: APIActor) {
+        self.actor = actor
+    }
+    
     // MARK: - constraints
    override func updateConstraints() {
         self.image.snp.updateConstraints { (make) in
@@ -91,8 +95,16 @@ class MWCastCollectionViewCell: UICollectionViewCell {
                     .cacheOriginalImage
                 ])
         }
-        self.title.text = actor.name
-        self.subTitle.text = actor.character
+        
+        let indexOfSpaceInName = actor.name.firstIndex(of: " ")
+        let indexOfSpaceInCharacter = actor.character.firstIndex(of: " ")
+        if let indexName = indexOfSpaceInName, let indexCharacter = indexOfSpaceInCharacter {
+            self.title.text = String(actor.name.prefix(upTo: indexName))
+            self.subTitle.text = String(actor.character.prefix(upTo: indexCharacter))
+        } else {
+            self.title.text = actor.name
+            self.subTitle.text = actor.character
+        }
         
         self.setNeedsUpdateConstraints()
     }

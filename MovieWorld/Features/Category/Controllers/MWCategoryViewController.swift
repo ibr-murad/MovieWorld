@@ -65,14 +65,14 @@ extension MWCategoryViewControler: UITableViewDelegate, UITableViewDataSource {
         cell.backgroundColor = .white
         cell.selectionStyle = .none
         cell.textLabel?.font = .systemFont(ofSize: 17)
-        cell.textLabel?.text = genres[indexPath.row].name
+        cell.textLabel?.text = genres[indexPath.row].name.capitalizingFirstLetter()
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let moviesListController = MWMoviesListViewController()
-        moviesListController.controllerTitle = self.genres[indexPath.row].name.capitalizingFirstLetter()
-        moviesListController.initController(url: MWURLPath.discoverMovie,
+        moviesListController.initController(title: self.genres[indexPath.row].name,
+                                            url: MWURLPath.discoverMovie,
                                             params: ["with_genres": "\(self.genres[indexPath.row].id)"])
         MWI.shared.pushVC(vc: moviesListController)
     }

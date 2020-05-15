@@ -51,8 +51,10 @@
 		2091ABA22464B7ED00BD9CAA /* APICast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2091ABA12464B7ED00BD9CAA /* APICast.swift */; };
 		2091ABA42464B7FE00BD9CAA /* APIActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2091ABA32464B7FE00BD9CAA /* APIActor.swift */; };
 		2093E09C246DA419006601CC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2093E09E246DA419006601CC /* Localizable.strings */; };
+		2093E0A1246DD7B2006601CC /* UIView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093E0A0246DD7B2006601CC /* UIView+Ex.swift */; };
 		2093FF4324636D8800B52EBA /* MWMainSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093FF4224636D8800B52EBA /* MWMainSection.swift */; };
 		2093FF45246384BE00B52EBA /* MWSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093FF44246384BE00B52EBA /* MWSystem.swift */; };
+		209468B0246F300500856339 /* MWResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209468AF246F300500856339 /* MWResponse.swift */; };
 		20987DC02461FB4D00475500 /* MWBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20987DBF2461FB4D00475500 /* MWBaseViewController.swift */; };
 		209CDE152440C4CF0062A239 /* MWError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CDE142440C4CF0062A239 /* MWError.swift */; };
 		209CDE192440FC850062A239 /* APIGenres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CDE182440FC850062A239 /* APIGenres.swift */; };
@@ -122,8 +124,10 @@
 		2091ABA32464B7FE00BD9CAA /* APIActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIActor.swift; sourceTree = "<group>"; };
 		2093E09D246DA419006601CC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2093E09F246DA41E006601CC /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2093E0A0246DD7B2006601CC /* UIView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ex.swift"; sourceTree = "<group>"; };
 		2093FF4224636D8800B52EBA /* MWMainSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MWMainSection.swift; sourceTree = "<group>"; };
 		2093FF44246384BE00B52EBA /* MWSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MWSystem.swift; sourceTree = "<group>"; };
+		209468AF246F300500856339 /* MWResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MWResponse.swift; sourceTree = "<group>"; };
 		20987DBF2461FB4D00475500 /* MWBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MWBaseViewController.swift; sourceTree = "<group>"; };
 		209CDE142440C4CF0062A239 /* MWError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MWError.swift; sourceTree = "<group>"; };
 		209CDE182440FC850062A239 /* APIGenres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGenres.swift; sourceTree = "<group>"; };
@@ -425,6 +429,7 @@
 			children = (
 				FA34BC97240C84E1005E9D71 /* MWNetwork.swift */,
 				209CDE142440C4CF0062A239 /* MWError.swift */,
+				209468AF246F300500856339 /* MWResponse.swift */,
 				2073119C246227B800DF6F9C /* MWURLPath.swift */,
 				201D94C72466E9B100EDF9E8 /* MWImagesBaseURL.swift */,
 			);
@@ -470,6 +475,7 @@
 				2021A7FC243E2CB40091476C /* MWNetwork+ExUtility.swift */,
 				2021A7FE243E2DD90091476C /* String+Ex.swift */,
 				201D94BC2466D2F200EDF9E8 /* Notification.Name+Ex.swift */,
+				2093E0A0246DD7B2006601CC /* UIView+Ex.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -818,9 +824,11 @@
 				20915A6A24699EA0002CE857 /* MWGroupsCollectionViewLayout.swift in Sources */,
 				204377DF246CA01D0063515B /* MWMovieCastAndCrewDetailsViewController.swift in Sources */,
 				2054D9012458AE8B00238869 /* MWGenresList.xcdatamodeld in Sources */,
+				2093E0A1246DD7B2006601CC /* UIView+Ex.swift in Sources */,
 				204377E3246CA2B20063515B /* MWPersonDescription.swift in Sources */,
 				208EA4D32465989000597AE3 /* MWGalleryCollectionViewCell.swift in Sources */,
 				201D94BF2466D73900EDF9E8 /* APIMedia.swift in Sources */,
+				209468B0246F300500856339 /* MWResponse.swift in Sources */,
 				2091ABA42464B7FE00BD9CAA /* APIActor.swift in Sources */,
 				200F6E64246B0ED900920769 /* APIPerson.swift in Sources */,
 				2021A7FD243E2CB40091476C /* MWNetwork+ExUtility.swift in Sources */,

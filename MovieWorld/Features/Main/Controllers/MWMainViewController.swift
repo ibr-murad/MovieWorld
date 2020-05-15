@@ -24,6 +24,7 @@ class MWMainViewController: MWBaseViewController {
         tableView.dataSource = self
         tableView.rowHeight = 305
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MWMainTableViewCell.self,
                            forCellReuseIdentifier: MWMainTableViewCell.reuseIdentifier)
@@ -89,8 +90,10 @@ class MWMainViewController: MWBaseViewController {
                     self.resultsTitles.append(section.title)
                     group.leave()
             }) { (error, response) in
-                print(error)
                 group.leave()
+                guard let response = response else {  return }
+                print(response.getMessage())
+                print(error.localizedDescription)
             }
         }
         group.notify(queue: .main) {
@@ -107,15 +110,17 @@ extension MWMainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = self.tableView.dequeueReusableCell(withIdentifier: MWMainTableViewCell.reuseIdentifier, for: indexPath) as? MWMainTableViewCell else { return UITableViewCell() }
-        cell.initCell(title: self.resultsTitles[indexPath.row], moives: self.results[indexPath.row].movies)
+        let cell = tableView.dequeueReusableCell(withIdentifier: MWMainTableViewCell.reuseIdentifier, for: indexPath)
+        (cell as? MWMainTableViewCell)?.initCell(title: self.resultsTitles[indexPath.row],
+                                                 moives: self.results[indexPath.row].movies)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let moviesListController = MWMoviesListViewController()
-        moviesListController.controllerTitle = self.resultsTitles[indexPath.row]
-        moviesListController.initController(url: self.requestUrlPaths[indexPath.row].urlPath, params: [:])
+        moviesListController.initController(title: self.resultsTitles[indexPath.row],
+                                            url: self.requestUrlPaths[indexPath.row].urlPath,
+                                            params: [:])
         MWI.shared.pushVC(vc: moviesListController)
     }
 }

@@ -27,8 +27,8 @@ class MWMoviesListTableViewCell: UITableViewCell {
     // MARK: - gui variables
     private lazy var newContentView: UIView = {
         var view = UIView()
-        view.backgroundColor = .none
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.addShadow()
         return view
     }()
     
@@ -165,7 +165,7 @@ class MWMoviesListTableViewCell: UITableViewCell {
         }
         var text = ""
         for i in 0..<movie.genres.count {
-            text += movie.genres[i].name
+            text += movie.genres[i].name.capitalizingFirstLetter()
             if i != movie.genres.count-1 {
                 text += ", "
             }

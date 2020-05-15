@@ -22,6 +22,7 @@ class MWDetailsViewConroller: MWBaseViewController {
     // MARK: - gui variables
     private lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
+        scroll.showsVerticalScrollIndicator = false
         return scroll
     }()
     

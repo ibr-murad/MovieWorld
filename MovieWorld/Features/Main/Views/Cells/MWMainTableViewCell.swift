@@ -56,7 +56,7 @@ class MWMainTableViewCell: UITableViewCell {
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 130, height: 225)
+        layout.itemSize = CGSize(width: 130, height: 230)
         return layout
     }()
     
@@ -114,8 +114,8 @@ extension MWMainTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: MWMainCollectionViewCell.reuseIdentifier, for: indexPath) as? MWMainCollectionViewCell else { return UICollectionViewCell() }
-        cell.initCell(movie: self.movies[indexPath.row])
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MWMainCollectionViewCell.reuseIdentifier, for: indexPath)
+        (cell as? MWMainCollectionViewCell)?.initCell(movie: self.movies[indexPath.row])
         return cell
     }
     

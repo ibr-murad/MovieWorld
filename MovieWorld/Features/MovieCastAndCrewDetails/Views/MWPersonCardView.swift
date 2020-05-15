@@ -10,13 +10,12 @@ import UIKit
 import SnapKit
 
 class MWPersonCardView: UIView {
- 
+    // MARK: - gui variables
     private var personId: Int = 0 {
         didSet {
             self.requestForPersonDetail()
         }
     }
-    
     private var person: APIPerson? {
         didSet {
             self.setup()
@@ -26,16 +25,17 @@ class MWPersonCardView: UIView {
     // MARK: - gui variables
     private lazy var newContentView: UIView = {
         var view = UIView()
-        view.backgroundColor = .none
+        view.backgroundColor = .white
+        view.addShadow()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    let imageInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
     private lazy var profileImageView: UIImageView = {
         var image = UIImageView()
         image.image = UIImage(named: "actor")
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         image.layer.cornerRadius = 5
         image.clipsToBounds = true
         return image
@@ -46,7 +46,6 @@ class MWPersonCardView: UIView {
         label.text = "Name Name "
         label.font = .boldSystemFont(ofSize: 17)
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -56,7 +55,6 @@ class MWPersonCardView: UIView {
         label.text = "Character Character"
         label.font = .systemFont(ofSize: 13)
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -68,7 +66,6 @@ class MWPersonCardView: UIView {
         label.textAlignment = .left
         label.alpha = 0.5
         label.setContentHuggingPriority(.defaultLow, for: .vertical)
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -101,8 +98,7 @@ class MWPersonCardView: UIView {
             make.edges.equalToSuperview()
         }
         self.profileImageView.snp.updateConstraints { (make) in
-            make.top.bottom.equalToSuperview().inset(10)
-            make.left.equalToSuperview().offset(16)
+            make.top.left.bottom.equalToSuperview().inset(self.imageInsets)
             make.size.equalTo(CGSize(width: 70, height: 70))
         }
         self.nameLabel.snp.updateConstraints { (make) in

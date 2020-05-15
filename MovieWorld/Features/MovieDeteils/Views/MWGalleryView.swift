@@ -89,10 +89,15 @@ class MWGalleryView: UIView {
     }
     
     private func fetchGallery() {
-        MWNetwork.shared.request(url: "movie/\(self.movie?.id ?? 481848)/images",
+        MWNetwork.shared.request(
+            url: "movie/\(self.movie?.id ?? 481848)/images",
             okHandler: { [weak self] (data: APIGallery, response) in
                 guard let self = self else { return }
-                self.gallery = data.backdrops
+                if data.backdrops.count != 0 {
+                    self.gallery = data.backdrops
+                } else if data.posters.count != 0 {
+                    self.gallery = data.posters
+                }
                 self.collectionView.reloadData()
         }) { (error, response) in
             print(error)
@@ -107,8 +112,9 @@ extension MWGalleryView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: MWGalleryCollectionViewCell.reuseIdentifier, for: indexPath) as? MWGalleryCollectionViewCell else { return UICollectionViewCell() }
-        cell.imageFormApi = self.gallery[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MWGalleryCollectionViewCell.reuseIdentifier,
+                                                     for: indexPath)
+        (cell as? MWGalleryCollectionViewCell)?.initView(image: self.gallery[indexPath.row])
         return cell
     }
 }

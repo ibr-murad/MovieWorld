@@ -24,9 +24,10 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
         var tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         tableView.register(MWMovieCastTableViewCell.self,
                            forCellReuseIdentifier: MWMovieCastTableViewCell.reuseIdentifier)
-        tableView.separatorStyle = .none
         return tableView
     }()
     
@@ -35,6 +36,7 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.crewCellReuseIdentifier)
         return tableView
     }()
@@ -49,9 +51,6 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
         super.viewDidLoad()
         
         self.setupController()
-        self.view.addSubview(self.castTableView)
-        self.view.addSubview(self.crewTableView)
-        self.makeConstraints()
     }
     
     // MARK: - constraints
@@ -70,6 +69,9 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
     private func setupController() {
         self.controllerTitle = NSLocalizedString("castController", comment: "")
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.view.addSubview(self.castTableView)
+        self.view.addSubview(self.crewTableView)
+        self.makeConstraints()
     }
     
     private func setCrew(data: [APICredit]) {
@@ -128,13 +130,14 @@ extension MWMovieCastAndCrewViewController: UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = UITableViewCell()
         switch tableView {
         case self.castTableView:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: MWMovieCastTableViewCell.reuseIdentifier, for: indexPath) as? MWMovieCastTableViewCell else { return UITableViewCell() }
-            cell.initView(actor: self.cast[indexPath.row])
+            cell = tableView.dequeueReusableCell(withIdentifier: MWMovieCastTableViewCell.reuseIdentifier, for: indexPath)
+            (cell as? MWMovieCastTableViewCell)?.initView(actor: self.cast[indexPath.row])
             return cell
         case self.crewTableView:
-            let cell = tableView.dequeueReusableCell(withIdentifier: self.crewCellReuseIdentifier, for: indexPath)
+            cell = tableView.dequeueReusableCell(withIdentifier: self.crewCellReuseIdentifier, for: indexPath)
             let accessoryImage = UIImageView(image: UIImage(named: "deteilIcon"))
             cell.accessoryView = accessoryImage
             cell.backgroundColor = .white
@@ -143,15 +146,22 @@ extension MWMovieCastAndCrewViewController: UITableViewDelegate, UITableViewData
             cell.textLabel?.text = self.crew[indexPath.section].crew[indexPath.row].name
             return cell
         default:
-            return UITableViewCell()
+            return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == self.castTableView {
-            let castAndCrewDatailController = MWMovieCastAndCrewDetailsViewController()
+        let castAndCrewDatailController = MWMovieCastAndCrewDetailsViewController()
+        switch tableView {
+        case self.castTableView:
             castAndCrewDatailController.initController(personId: self.cast[indexPath.row].id)
-            MWInterface.shared.pushVC(vc: castAndCrewDatailController)
+            break
+        case self.crewTableView:
+            castAndCrewDatailController.initController(personId: self.crew[indexPath.section].crew[indexPath.row].id)
+            break
+        default:
+            print("Error: no person id")
         }
+        MWInterface.shared.pushVC(vc: castAndCrewDatailController)
     }
 }

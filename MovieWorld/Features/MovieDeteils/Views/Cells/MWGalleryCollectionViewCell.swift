@@ -12,7 +12,7 @@ import Kingfisher
 class MWGalleryCollectionViewCell: UICollectionViewCell {
     // MARK: - variables
     static let reuseIdentifier = "MWGalleryCollectionViewCell"
-    var imageFormApi: APIImage? {
+    private var imageFormApi: APIImage? {
         didSet{
             self.setup()
         }
@@ -40,6 +40,10 @@ class MWGalleryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func initView(image: APIImage) {
+        self.imageFormApi = image
+    }
+    
     // MARK: - constraints
     override func updateConstraints() {
         self.imageView.snp.updateConstraints { (make) in
@@ -62,6 +66,7 @@ class MWGalleryCollectionViewCell: UICollectionViewCell {
                 .transition(.fade(1)),
                 .cacheOriginalImage
             ])
+        
         self.setNeedsUpdateConstraints()
     }
 }

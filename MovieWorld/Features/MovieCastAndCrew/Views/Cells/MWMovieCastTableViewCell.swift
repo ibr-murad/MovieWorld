@@ -28,11 +28,12 @@ class MWMovieCastTableViewCell: UITableViewCell {
     // MARK: - gui variables
     private lazy var newContentView: UIView = {
         var view = UIView()
-        view.backgroundColor = .none
+        view.backgroundColor = .white
+        view.addShadow()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+    let profileImageInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
     private lazy var profileImageView: UIImageView = {
         var image = UIImageView()
         image.image = UIImage(named: "actor")
@@ -104,8 +105,7 @@ class MWMovieCastTableViewCell: UITableViewCell {
             make.edges.equalToSuperview()
         }
         self.profileImageView.snp.updateConstraints { (make) in
-            make.top.bottom.equalToSuperview().inset(10)
-            make.left.equalToSuperview().offset(16)
+            make.top.left.bottom.equalToSuperview().inset(self.profileImageInsets)
             make.size.equalTo(CGSize(width: 70, height: 70))
         }
         self.nameLabel.snp.updateConstraints { (make) in

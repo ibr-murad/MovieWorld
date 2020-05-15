@@ -50,13 +50,15 @@ class MWMoviesListViewController: MWBaseViewController {
         var tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.estimatedRowHeight = 50
+        tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MWMoviesListTableViewCell.self,
                            forCellReuseIdentifier: MWMoviesListTableViewCell.reuseIdentifier)
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         tableView.refreshControl = self.refreshControl
         return tableView
     }()
@@ -68,7 +70,8 @@ class MWMoviesListViewController: MWBaseViewController {
     }()
     
     // MARK: - initialization
-    func initController(url: String, params: [String: String]) {
+    func initController(title: String, url: String, params: [String: String]) {
+        self.controllerTitle = title.capitalizingFirstLetter()
         self.params = params
         self.url = url
         self.oldUrl = url
@@ -165,9 +168,9 @@ extension MWMoviesListViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = self.tableView.dequeueReusableCell(withIdentifier: MWMoviesListTableViewCell.reuseIdentifier, for: indexPath) as? MWMoviesListTableViewCell else { return UITableViewCell() }
+        let cell = tableView.dequeueReusableCell(withIdentifier: MWMoviesListTableViewCell.reuseIdentifier, for: indexPath)
         if self.movies.count != 0 {
-            cell.initView(movie: self.movies[indexPath.row])
+            (cell as? MWMoviesListTableViewCell)?.initView(movie: self.movies[indexPath.row])
         }
         return cell
     }
@@ -199,15 +202,15 @@ extension MWMoviesListViewController: UICollectionViewDataSource, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = self.collectionView.dequeueReusableCell(
-            withReuseIdentifier: MWGroupstCollectionViewCell.reuseIdentifier,
-            for: indexPath)  as? MWGroupstCollectionViewCell else { return UICollectionViewCell()}
-        cell.setCategory(self.genres[indexPath.row].name)
-        
-        if self.filteredGenres[indexPath.row] {
-            cell.conteinerView.alpha = 1
-        } else {
-            cell.conteinerView.alpha = 0.5
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MWGroupstCollectionViewCell.reuseIdentifier,
+                                                      for: indexPath)
+        if let cell = cell as? MWGroupstCollectionViewCell {
+            cell.setCategory(self.genres[indexPath.row].name)
+            if self.filteredGenres[indexPath.row] {
+                cell.conteinerView.alpha = 1
+            } else {
+                cell.conteinerView.alpha = 0.5
+            }
         }
         return cell
     }

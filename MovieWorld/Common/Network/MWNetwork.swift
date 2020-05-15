@@ -8,8 +8,8 @@
 
 import Foundation
 
-typealias Success<T> = (_ data: T, _ response: HTTPURLResponse?) -> Void
-typealias Failure = (_ error: MWError, _ response: HTTPURLResponse? ) -> Void
+typealias Success<T> = (_ data: T, _ response: MWResponse) -> Void
+typealias Failure = (_ error: MWError, _ response: MWResponse? ) -> Void
 
 class MWNetwork {
     // MARK: - variables
@@ -43,17 +43,18 @@ class MWNetwork {
             DispatchQueue.main.async {
                 guard let response = response as? HTTPURLResponse else { return }
                 if error != nil {
-                    errorHandler(.serverError(statusCode: response.statusCode ), response)
+                    errorHandler(.serverError(statusCode: response.statusCode ),
+                                 .response(code: response.statusCode))
                     return
                 }
                 guard let data = data else { return }
                 if let result = try? JSONDecoder().decode(T.self, from: data) {
-                    okHandler(result, response)
+                    okHandler(result, .response(code: response.statusCode))
                 } else {
                     if error != nil {
-                        errorHandler(.parsingError(error: error!), response)
+                        errorHandler(.parsingError(error: error!), .response(code: response.statusCode))
                     } else {
-                        errorHandler(.other(info: "parsing"), response)
+                        errorHandler(.other(info: "parsing"), .response(code: response.statusCode))
                     }
                     return
                 }

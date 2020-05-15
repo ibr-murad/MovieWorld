@@ -18,11 +18,11 @@ class MWCardView: UIView {
     }
     
     // MARK: - gui variables
+    let posterImageInsets = UIEdgeInsets(top: 10, left: 16, bottom: 32, right: 16)
     private lazy var posterImageView: UIImageView = {
         var image = UIImageView()
         image.image = UIImage(named: "movie")
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         image.layer.cornerRadius = 5
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,6 @@ class MWCardView: UIView {
         label.text = "21 Briges"
         label.font = .boldSystemFont(ofSize: 17)
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -44,7 +43,6 @@ class MWCardView: UIView {
         label.text = "2019, USA"
         label.font = .systemFont(ofSize: 13)
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -56,7 +54,6 @@ class MWCardView: UIView {
         label.textAlignment = .left
         label.alpha = 0.5
         label.setContentHuggingPriority(.defaultLow, for: .vertical)
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -66,7 +63,6 @@ class MWCardView: UIView {
         var label = UILabel()
         label.text = "IMDB 8.2, KP 8.3"
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.font = .boldSystemFont(ofSize: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -75,6 +71,9 @@ class MWCardView: UIView {
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = .white
+        self.addShadow()
         
         self.addSubview(self.posterImageView)
         self.addSubview(self.nameLabel)
@@ -94,9 +93,7 @@ class MWCardView: UIView {
     // MARK: - constraints
     override func updateConstraints() {
         self.posterImageView.snp.updateConstraints { (make) in
-            make.top.equalToSuperview().inset(10)
-            make.left.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().inset(32)
+            make.top.left.bottom.equalToSuperview().inset(self.posterImageInsets)
             make.size.equalTo(CGSize(width: 70, height: 100))
         }
         self.nameLabel.snp.updateConstraints { (make) in
@@ -147,7 +144,7 @@ class MWCardView: UIView {
         }
         var text = ""
         for i in 0..<movie.genres.count {
-            text += movie.genres[i].name
+            text += movie.genres[i].name.capitalizingFirstLetter()
             if i != movie.genres.count-1 {
                 text += ", "
             }

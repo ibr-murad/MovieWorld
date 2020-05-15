@@ -17,6 +17,7 @@ class MWMovieCastAndCrewDetailsViewController: MWBaseViewController {
     // MARK: - gui variables
     private lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
+        scroll.showsVerticalScrollIndicator = false
         return scroll
     }()
     
@@ -48,6 +49,10 @@ class MWMovieCastAndCrewDetailsViewController: MWBaseViewController {
         super.viewDidLoad()
         
         self.setupController()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     // MARK: - constraints

@@ -12,6 +12,7 @@ import SnapKit
 
 class MWPersonFilmographyView: UIView {
     // MARK: - variables
+    private var isActor: Bool = true
     private var personId: Int = 0 {
         didSet {
             self.requestForPersonFilmography()
@@ -86,6 +87,7 @@ class MWPersonFilmographyView: UIView {
             make.top.equalTo(self.label.snp.bottom).offset(12)
             make.left.right.bottom.equalToSuperview()
         }
+        
         super.updateConstraints()
     }
     
@@ -94,9 +96,27 @@ class MWPersonFilmographyView: UIView {
             okHandler: { [weak self] (data: APIMovieCredits, response) in
                 guard let self = self else { return }
                 self.movies = data.cast
+                if self.movies.count < 3 && data.crew.count != 0 {
+                    self.mergeArrays(crews: data.crew)
+                }
                 self.collectionView.reloadData()
         }) { (error, response) in
             print(error)
+        }
+    }
+    
+    private func mergeArrays(crews: [APIMovieCreditsCrew]) {
+        for movie in crews {
+            self.movies.append(
+                APIMovieCreditsCast(id: movie.id,
+                                    posterPath: movie.posterPath,
+                                    backdrop: movie.backdrop,
+                                    title: movie.title,
+                                    releaseDate: movie.releaseDate,
+                                    rating: movie.rating,
+                                    overview: movie.overview,
+                                    genres: movie.genres,
+                                    character: movie.job))
         }
     }
 }
@@ -108,11 +128,10 @@ extension MWPersonFilmographyView: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = self.collectionView.dequeueReusableCell(
+        let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: MWPersonFilmographyCollectionViewCell.reuseIdentifier,
-            for: indexPath) as? MWPersonFilmographyCollectionViewCell else { return UICollectionViewCell() }
-        
-        cell.initView(movie: self.movies[indexPath.row])
+            for: indexPath)
+        (cell as? MWPersonFilmographyCollectionViewCell)?.initView(movie: self.movies[indexPath.row])
         return cell
     }
     
