@@ -57,7 +57,7 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
     private func makeConstraints() {
         self.castTableView.snp.makeConstraints { (make) in
             make.top.left.right.equalToSuperview()
-            make.height.equalTo(500)
+            make.height.equalTo(UIScreen.main.bounds.height/2)
         }
         self.crewTableView.snp.makeConstraints { (make) in
             make.top.equalTo(self.castTableView.snp.bottom).offset(10)

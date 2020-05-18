@@ -13,19 +13,16 @@ class MWGroupsCollectionViewLayout: UICollectionViewLayout {
     // MARK:- delegate variable
     weak var delegate: MWGroupsLayoutDelegate?
     
-    // MARK: - private variables
+    // MARK: - variables
     private var cache: [UICollectionViewLayoutAttributes] = []
     private let numberOfColumns = 2
     private let cellPadding: CGFloat = 6
-    
     private var contentHeight: CGFloat {
         guard let collectionView = collectionView else { return 0 }
         let insets = collectionView.contentInset
         return collectionView.bounds.height - (insets.top + insets.bottom)
     }
-    
     private var contentWidth: CGFloat = 0
-    
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
@@ -83,7 +80,6 @@ class MWGroupsCollectionViewLayout: UICollectionViewLayout {
 }
 
 protocol MWGroupsLayoutDelegate: AnyObject {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        widthForLabelAtIndexPath indexPath: IndexPath) -> CGFloat
+    func collectionView(_ collectionView: UICollectionView,
+                        widthForLabelAtIndexPath indexPath: IndexPath) -> CGFloat
 }

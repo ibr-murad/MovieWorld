@@ -8,8 +8,6 @@ target 'MovieWorld' do
 
   pod 'SnapKit', '~> 4.0'
   pod 'Kingfisher', '~> 5.0'
-  pod 'YouTubePlayer'
   pod 'XCDYouTubeKit'
-  pod 'Reveal-SDK', configurations: ['Debug']
 
 end

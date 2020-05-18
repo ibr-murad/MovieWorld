@@ -12,7 +12,7 @@ class MWMainViewController: MWBaseViewController {
     // MARK: - variables
     private var results: [APIResults] = []
     private var resultsTitles: [String] = []
-    private let requestUrlPaths = [MWMainSections.nowPlaying.getSectionModel(),
+    private var requestUrlPaths = [MWMainSections.nowPlaying.getSectionModel(),
                                     MWMainSections.popular.getSectionModel(),
                                     MWMainSections.topRated.getSectionModel(),
                                     MWMainSections.upcoming.getSectionModel()]
@@ -42,6 +42,7 @@ class MWMainViewController: MWBaseViewController {
     // MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.fillArrays {}
         self.setupController()
         self.view.addSubview(self.tableView)

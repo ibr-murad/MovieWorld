@@ -16,6 +16,7 @@ class MWSystem {
     // MARK: - initialization
     private init() {}
     
+    
     // MARK: - request
     func requestGenres(completion: @escaping ([Genre]) -> Void) {
         MWNetwork.shared.request(

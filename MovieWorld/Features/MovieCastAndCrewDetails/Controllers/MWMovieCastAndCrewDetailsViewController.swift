@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 
 class MWMovieCastAndCrewDetailsViewController: MWBaseViewController {
-    
     // MARK: - variables
     private var personId: Int = 0 
     

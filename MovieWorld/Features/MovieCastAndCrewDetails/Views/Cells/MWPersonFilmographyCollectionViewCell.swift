@@ -95,8 +95,8 @@ class MWPersonFilmographyCollectionViewCell: UICollectionViewCell {
                 ])
         }
         self.title.text = movie.title
-        self.subTitle.text = movie.releaseDate
-        
+        self.subTitle.text = String(movie.releaseDate.prefix(4))
+
         self.setNeedsUpdateConstraints()
     }
 }

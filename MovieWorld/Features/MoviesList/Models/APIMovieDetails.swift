@@ -19,6 +19,7 @@ struct APIMovieDetails: Decodable {
     let runtime: Int?
     let adult: Bool
     let countries: [APIProductionCountries]
+    let voteCount:Int
     
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
@@ -31,6 +32,7 @@ struct APIMovieDetails: Decodable {
         genres,
         runtime,
         adult,
-        countries = "production_countries"
+        countries = "production_countries",
+        voteCount = "vote_count"
     }
 }

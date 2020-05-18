@@ -38,6 +38,7 @@ class MWFilmView: UIView {
         return image
     }()
     
+    
     private lazy var likeImage: UIImageView = {
         var image = UIImageView()
         image.image = UIImage(named: "likeIcon")
@@ -45,22 +46,7 @@ class MWFilmView: UIView {
         return image
     }()
     
-    private lazy var dislikeImage: UIImageView = {
-        var image = UIImageView()
-        image.image = UIImage(named: "dislikeIcon")
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
-    }()
-    
     private lazy var likeLabel: UILabel = {
-        var label = UILabel()
-        label.text = "15K"
-        label.font = .systemFont(ofSize: 15)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private lazy var dislikeLabel: UILabel = {
         var label = UILabel()
         label.text = "356"
         label.font = .systemFont(ofSize: 15)
@@ -76,8 +62,6 @@ class MWFilmView: UIView {
         self.videoImage.addSubview(self.playImage)
         self.addSubview(self.likeImage)
         self.addSubview(self.likeLabel)
-        self.addSubview(self.dislikeImage)
-        self.addSubview(self.dislikeLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -103,22 +87,13 @@ class MWFilmView: UIView {
         }
         self.likeLabel.snp.updateConstraints { (make) in
             make.top.equalTo(self.videoImage.snp.bottom).offset(16)
-            make.right.equalTo(self.dislikeImage.snp.left).offset(-16)
-            make.bottom.equalToSuperview()
-        }
-        self.dislikeImage.snp.updateConstraints { (make) in
-            make.top.equalTo(self.videoImage.snp.bottom).offset(16)
-            make.right.equalTo(self.dislikeLabel.snp.left).offset(-3)
-            make.bottom.equalToSuperview()
-        }
-        self.dislikeLabel.snp.updateConstraints { (make) in
-            make.top.equalTo(self.videoImage.snp.bottom).offset(16)
             make.right.bottom.equalToSuperview()
         }
         
         super.updateConstraints()
     }
     
+    // MARK: - setters
     private func setup() {
         guard let movie = self.movie else { return }
         guard let imageURL = URL(string: (BaseUrl.backdrop + (movie.backdrop ?? "" ))) else { return }
@@ -131,6 +106,8 @@ class MWFilmView: UIView {
                 .transition(.fade(1)),
                 .cacheOriginalImage
             ])
+        self.likeLabel.text = String(movie.voteCount)
+        
         self.setNeedsUpdateConstraints()
     }
     

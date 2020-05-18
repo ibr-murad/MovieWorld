@@ -49,10 +49,6 @@ class MWMainCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        MWSystem.shared.requestGenres { [weak self] (data) in
-            guard let self = self else { return }
-            self.genres = data
-        }
         self.contentView.addSubview(self.image)
         self.contentView.addSubview(self.title)
         self.contentView.addSubview(self.subTitle)
@@ -100,11 +96,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
                 ])
         }
         self.title.text = movie.title
-        var subTitleString = String(movie.releaseDate.prefix(4)) //year
-        if let firstGenre =  genres.first(where: {$0.id == movie.genres[0]} ) {
-            subTitleString += ", \(firstGenre.name)"
-        }
-        self.subTitle.text = subTitleString
+        self.subTitle.text = String(movie.releaseDate.prefix(4))
         
         self.setNeedsUpdateConstraints()
     }
