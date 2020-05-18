@@ -9,10 +9,10 @@
 import UIKit
 
 class MWGroupsCollectionViewLayout: UICollectionViewLayout {
-    
+
     // MARK:- delegate variable
     weak var delegate: MWGroupsLayoutDelegate?
-    
+
     // MARK: - variables
     private var cache: [UICollectionViewLayoutAttributes] = []
     private let numberOfColumns = 2
@@ -26,12 +26,12 @@ class MWGroupsCollectionViewLayout: UICollectionViewLayout {
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
-    
+
     //MARK:- update collectionView cells
     override func prepare() {
         guard cache.isEmpty == true,
             let collectionView = collectionView else { return }
-        
+
         let rowHeight = contentHeight / CGFloat(numberOfColumns)
         var yOffset: [CGFloat] = []
         for column in 0..<numberOfColumns {
@@ -39,10 +39,10 @@ class MWGroupsCollectionViewLayout: UICollectionViewLayout {
         }
         var column = 0
         var xOffset: [CGFloat] = .init(repeating: 0, count: numberOfColumns)
-        
+
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
             let indexPath = IndexPath(item: item, section: 0)
-            
+
             let labelWidth = delegate?.collectionView(
                 collectionView,
                 widthForLabelAtIndexPath: indexPath) ?? 180
@@ -52,7 +52,7 @@ class MWGroupsCollectionViewLayout: UICollectionViewLayout {
                                width: width,
                                height: rowHeight)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
-            
+
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = insetFrame
             cache.append(attributes)
@@ -61,11 +61,11 @@ class MWGroupsCollectionViewLayout: UICollectionViewLayout {
             column = column < (numberOfColumns - 1) ? (column + 1) : 0
         }
     }
-    
+
     // MARK:- setting layoutAttributes for cells
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         var visibleLayoutAttributes: [UICollectionViewLayoutAttributes] = []
-        
+
         for attributes in cache {
             if attributes.frame.intersects(rect) {
                 visibleLayoutAttributes.append(attributes)
@@ -73,7 +73,7 @@ class MWGroupsCollectionViewLayout: UICollectionViewLayout {
         }
         return visibleLayoutAttributes
     }
-    
+
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return cache[indexPath.item]
     }

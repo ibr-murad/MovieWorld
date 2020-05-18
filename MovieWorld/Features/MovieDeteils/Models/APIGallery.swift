@@ -11,7 +11,7 @@ struct APIGallery: Decodable {
     let id: Int
     let backdrops: [APIImage]
     let posters: [APIImage]
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id, backdrops, posters

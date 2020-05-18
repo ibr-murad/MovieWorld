@@ -14,7 +14,7 @@ struct APIVideo: Decodable {
     let site: String
     let size: Int
     let type: String
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id, key, name, site, size, type

@@ -21,7 +21,7 @@ class MWPersonDescription: UIView {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var titleLabel: UILabel = {
         var label = UILabel()
@@ -30,7 +30,7 @@ class MWPersonDescription: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var descriptionLabel: UILabel = {
         var label = UILabel()
         label.text = "danger of the game, as it doesn’t like cheat"
@@ -40,19 +40,19 @@ class MWPersonDescription: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.addSubview(self.titleLabel)
         self.addSubview(self.descriptionLabel)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.titleLabel.snp.updateConstraints { (make) in
@@ -62,20 +62,20 @@ class MWPersonDescription: UIView {
             make.top.equalTo(self.titleLabel.snp.bottom).offset(16)
             make.left.right.bottom.equalToSuperview()
         }
-        
+
         super.updateConstraints()
     }
-    
+
     func initView(personId: Int) {
         self.personId = personId
     }
-    
+
     // MARK: - setters
     private func setup() {
         self.descriptionLabel.text = self.person?.biography
         self.setNeedsUpdateConstraints()
     }
-    
+
     // MARK: - request
     private func requestForPersonDetail() {
         MWNetwork.shared.request(url: "person/\(self.personId)",

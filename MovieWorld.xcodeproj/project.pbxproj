@@ -443,7 +443,6 @@
 				FA34BC90240C8465005E9D71 /* Network */,
 				FAC0E5AE2402C80300A94AF2 /* Navigaton */,
 				FAC0E5AF2402C87800A94AF2 /* Controllers */,
-				FAC0E5B02402C89E00A94AF2 /* Controls */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -506,13 +505,6 @@
 				20987DBF2461FB4D00475500 /* MWBaseViewController.swift */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		FAC0E5B02402C89E00A94AF2 /* Controls */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controls;
 			sourceTree = "<group>";
 		};
 		FAC0E5B12402C8E400A94AF2 /* Search */ = {

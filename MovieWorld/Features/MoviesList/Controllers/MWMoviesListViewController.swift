@@ -18,7 +18,7 @@ class MWMoviesListViewController: MWBaseViewController {
     private var page: Int = 1
     private var totalPages: Int = 0
     private var totalResults: Int = 0
-    private var requestMore: Bool = false
+    private var isRequestBusy: Bool = false
     private var oldUrl: String = ""
     private var url: String = "" {
         didSet {
@@ -26,7 +26,7 @@ class MWMoviesListViewController: MWBaseViewController {
             self.tableView.reloadData()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var collectionView: UICollectionView = {
         var collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.collectionViewLayout)
@@ -39,13 +39,13 @@ class MWMoviesListViewController: MWBaseViewController {
                                 forCellWithReuseIdentifier: MWGroupstCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
-    
+
     private lazy var collectionViewLayout: MWGroupsCollectionViewLayout = {
         let layout = MWGroupsCollectionViewLayout()
         layout.delegate = self
         return layout
     }()
-    
+
     private lazy var tableView: UITableView = {
         var tableView = UITableView()
         tableView.delegate = self
@@ -62,13 +62,13 @@ class MWMoviesListViewController: MWBaseViewController {
         tableView.refreshControl = self.refreshControl
         return tableView
     }()
-    
+
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         return refreshControl
     }()
-    
+
     // MARK: - initialization
     func initController(title: String, url: String, params: [String: String]) {
         self.controllerTitle = title.capitalizingFirstLetter()
@@ -76,7 +76,7 @@ class MWMoviesListViewController: MWBaseViewController {
         self.url = url
         self.oldUrl = url
     }
-    
+
     // MARK: - constraints
     private func makeConstraints() {
         self.collectionView.snp.makeConstraints { (make) in
@@ -90,11 +90,11 @@ class MWMoviesListViewController: MWBaseViewController {
             make.left.right.bottom.equalToSuperview()
         }
     }
-    
+
     // MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.view.addSubview(self.collectionView)
         self.view.addSubview(self.tableView)
         self.makeConstraints()
@@ -102,23 +102,23 @@ class MWMoviesListViewController: MWBaseViewController {
             guard let self = self else { return }
             self.genres = data
             self.filteredGenres = Array(repeating: false, count: data.count)
-            self.tableView.reloadData()
             self.collectionView.reloadData()
+            self.tableView.reloadData()
         }
     }
-    
+
     // MARK: -actions
     @objc private func refresh(sender: UIRefreshControl) {
         self.tableView.reloadData()
         sender.endRefreshing()
     }
-    
+
     // MARK: -requests
     private func loadMovies() {
         let group = DispatchGroup()
         group.enter()
         self.params.merge(["page": "\(self.page)"]) { (_, new) in new }
-        self.requestMore = true
+        self.isRequestBusy = true
         MWNetwork.shared.request(url: self.url,
             params: self.params,
             okHandler: { [weak self] (data: APIResults, response) in
@@ -131,14 +131,14 @@ class MWMoviesListViewController: MWBaseViewController {
             print(error)
             group.leave()
         }
-        
+
         group.notify(queue: .main) {
             self.page += 1
             self.tableView.reloadData()
-            self.requestMore = false
+            self.isRequestBusy = false
         }
     }
-    
+
     private func filteringByGeres() {
         var genresId: [Int32] = []
         for i in 0..<self.filteredGenres.count {
@@ -166,7 +166,7 @@ extension MWMoviesListViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return movies.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MWMoviesListTableViewCell.reuseIdentifier, for: indexPath)
         if self.movies.count != 0 {
@@ -174,18 +174,18 @@ extension MWMoviesListViewController: UITableViewDelegate, UITableViewDataSource
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let deteilController = MWDetailsViewConroller()
         deteilController.initController(movieId: self.movies[indexPath.row].id)
         MWInterface.shared.pushVC(vc: deteilController)
     }
-    
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight =  scrollView.contentSize.height
         if offsetY > contentHeight - scrollView.frame.size.height * 1.5 {
-            if !self.requestMore, self.page < self.totalPages {
+            if !self.isRequestBusy, self.page < self.totalPages {
                 self.loadMovies()
             }
         }
@@ -197,7 +197,7 @@ extension MWMoviesListViewController: UICollectionViewDataSource, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.genres.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MWGroupstCollectionViewCell.reuseIdentifier,
                                                       for: indexPath)
@@ -211,7 +211,7 @@ extension MWMoviesListViewController: UICollectionViewDataSource, UICollectionVi
         }
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if self.filteredGenres[indexPath.row] {
             self.filteredGenres[indexPath.row] = false

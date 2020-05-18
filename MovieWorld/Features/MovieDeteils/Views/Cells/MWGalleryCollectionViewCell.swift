@@ -17,7 +17,7 @@ class MWGalleryCollectionViewCell: UICollectionViewCell {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var imageView: UIImageView = {
         var image = UIImageView()
@@ -27,32 +27,32 @@ class MWGalleryCollectionViewCell: UICollectionViewCell {
         image.clipsToBounds = true
         return image
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.contentView.addSubview(self.imageView)
         self.setup()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(image: APIImage) {
         self.imageFormApi = image
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.imageView.snp.updateConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        
+
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     private func setup() {
         guard let image = self.imageFormApi else { return }
@@ -66,7 +66,7 @@ class MWGalleryCollectionViewCell: UICollectionViewCell {
                 .transition(.fade(1)),
                 .cacheOriginalImage
             ])
-        
+
         self.setNeedsUpdateConstraints()
     }
 }

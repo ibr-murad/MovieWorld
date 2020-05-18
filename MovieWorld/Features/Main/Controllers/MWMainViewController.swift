@@ -13,10 +13,10 @@ class MWMainViewController: MWBaseViewController {
     private var results: [APIResults] = []
     private var resultsTitles: [String] = []
     private var requestUrlPaths = [MWMainSections.nowPlaying.getSectionModel(),
-                                    MWMainSections.popular.getSectionModel(),
-                                    MWMainSections.topRated.getSectionModel(),
-                                    MWMainSections.upcoming.getSectionModel()]
-    
+                                   MWMainSections.popular.getSectionModel(),
+                                   MWMainSections.topRated.getSectionModel(),
+                                   MWMainSections.upcoming.getSectionModel()]
+
     // MARK: - gui variables
     private lazy var tableView: UITableView = {
         var tableView = UITableView()
@@ -32,54 +32,54 @@ class MWMainViewController: MWBaseViewController {
         tableView.refreshControl = self.refreshControl
         return tableView
     }()
-    
+
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         return refreshControl
     }()
-    
-    // MARK: - view life cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.fillArrays {}
-        self.setupController()
-        self.view.addSubview(self.tableView)
-        self.makeConstraints()
-    }
-    
+
     // MARK: - constraints
     private func makeConstraints() {
         self.tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
     }
-    
+
+    // MARK: - view life cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.fetchMovies {}
+        self.setupController()
+        self.view.addSubview(self.tableView)
+        self.makeConstraints()
+    }
+
     // MARK: - setters
     private func setupController() {
         self.controllerTitle = NSLocalizedString("mainController", comment: "")
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
-    
+
     // MARK: - actions
     @objc private func refresh(sender: UIRefreshControl) {
         let group = DispatchGroup()
         group.enter()
         self.results = []
         self.resultsTitles = []
-        self.fillArrays {
+        self.fetchMovies {
             group.leave()
         }
-        
+
         group.notify(queue: .main) {
             self.tableView.reloadData()
             sender.endRefreshing()
         }
     }
-    
+
     // MARK: - request
-    private func fillArrays(completion: @escaping () -> Void) {
+    private func fetchMovies(completion: @escaping () -> Void) {
         let group = DispatchGroup()
         for section in self.requestUrlPaths {
             group.enter()
@@ -109,14 +109,14 @@ extension MWMainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.results.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MWMainTableViewCell.reuseIdentifier, for: indexPath)
         (cell as? MWMainTableViewCell)?.initCell(title: self.resultsTitles[indexPath.row],
                                                  moives: self.results[indexPath.row].movies)
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let moviesListController = MWMoviesListViewController()
         moviesListController.initController(title: self.resultsTitles[indexPath.row],

@@ -18,7 +18,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var image: UIImageView = {
         var image = UIImageView()
@@ -28,7 +28,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
         image.clipsToBounds = true
         return image
     }()
-    
+
     private lazy var title: UILabel = {
         var title = UILabel()
         title.text = "21 Briges"
@@ -36,7 +36,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
-    
+
     private lazy var subTitle: UILabel = {
         var subTitle = UILabel()
         subTitle.text = "2019, Drama"
@@ -44,24 +44,24 @@ class MWMainCollectionViewCell: UICollectionViewCell {
         subTitle.translatesAutoresizingMaskIntoConstraints = false
         return subTitle
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.contentView.addSubview(self.image)
         self.contentView.addSubview(self.title)
         self.contentView.addSubview(self.subTitle)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initCell(movie: APIMovie) {
         self.movie = movie
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.image.snp.updateConstraints { (make) in
@@ -76,10 +76,10 @@ class MWMainCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(self.title.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
-        
+
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     func setup() {
         guard let movie = self.movie else { return }
@@ -97,7 +97,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
         }
         self.title.text = movie.title
         self.subTitle.text = String(movie.releaseDate.prefix(4))
-        
+
         self.setNeedsUpdateConstraints()
     }
 }

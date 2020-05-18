@@ -17,7 +17,7 @@ class MWMainTableViewCell: UITableViewCell {
             self.label.text = self.title
         }
     }
-    
+
     // MARK: - gui variables
     private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     private lazy var newContentView: UIView = {
@@ -26,7 +26,7 @@ class MWMainTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var label: UILabel = {
         var label = UILabel()
         label.text = "New"
@@ -34,14 +34,14 @@ class MWMainTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var button: MWAllButton = {
         var button = MWAllButton()
         button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: self.flowLayout)
         collectionView.backgroundColor = .white
@@ -52,38 +52,38 @@ class MWMainTableViewCell: UITableViewCell {
         collectionView.register(MWMainCollectionViewCell.self, forCellWithReuseIdentifier: MWMainCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
-    
+
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 130, height: 230)
         return layout
     }()
-    
+
     // MARK: - initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         self.backgroundColor = .white
         self.selectionStyle = .none
-        
+
         self.contentView.addSubview(self.newContentView)
         self.newContentView.addSubview(self.label)
         self.newContentView.addSubview(self.button)
         self.newContentView.addSubview(self.collectionView)
-        
+
         self.setNeedsUpdateConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initCell(title: String, moives: [APIMovie]) {
         self.movies = moives
         self.title = title
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -102,7 +102,7 @@ class MWMainTableViewCell: UITableViewCell {
             make.top.equalTo(self.button.snp.bottom).offset(16)
             make.left.right.bottom.equalToSuperview()
         }
-        
+
         super.updateConstraints()
     }
 }
@@ -112,13 +112,13 @@ extension MWMainTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return movies.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MWMainCollectionViewCell.reuseIdentifier, for: indexPath)
         (cell as? MWMainCollectionViewCell)?.initCell(movie: self.movies[indexPath.row])
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let deteilController = MWDetailsViewConroller()
         deteilController.initController(movieId: self.movies[indexPath.row].id)

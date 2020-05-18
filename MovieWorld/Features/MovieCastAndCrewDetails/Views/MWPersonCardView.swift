@@ -21,7 +21,7 @@ class MWPersonCardView: UIView {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var newContentView: UIView = {
         var view = UIView()
@@ -30,7 +30,7 @@ class MWPersonCardView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     let imageInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
     private lazy var profileImageView: UIImageView = {
         var image = UIImageView()
@@ -40,7 +40,7 @@ class MWPersonCardView: UIView {
         image.clipsToBounds = true
         return image
     }()
-    
+
     private lazy var nameLabel: UILabel = {
         var label = UILabel()
         label.text = "Name Name "
@@ -49,7 +49,7 @@ class MWPersonCardView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var characterLabel: UILabel = {
         var label = UILabel()
         label.text = "Character Character"
@@ -58,7 +58,7 @@ class MWPersonCardView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var dateOfBirthLabel: UILabel = {
         var label = UILabel()
         label.text = "01.03.1978 to date (40 years)"
@@ -70,28 +70,28 @@ class MWPersonCardView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.backgroundColor = .none
-        
+
         self.addSubview(self.newContentView)
         self.newContentView.addSubview(self.profileImageView)
         self.newContentView.addSubview(self.nameLabel)
         self.newContentView.addSubview(self.characterLabel)
         self.newContentView.addSubview(self.dateOfBirthLabel)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(personId: Int) {
         self.personId = personId
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -117,10 +117,10 @@ class MWPersonCardView: UIView {
             make.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(4)
         }
-        
+
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     func setup() {
         guard let actor = self.person else { return }
@@ -141,10 +141,10 @@ class MWPersonCardView: UIView {
         if let birthday = actor.birthday {
             self.dateOfBirthLabel.text = self.calculateAge(birthday: birthday)
         }
-        
+
         self.setNeedsUpdateConstraints()
     }
-    
+
     // MARK: - request
     private func requestForPersonDetail() {
         MWNetwork.shared.request(url: "person/\(self.personId)",
@@ -155,7 +155,7 @@ class MWPersonCardView: UIView {
             print(error)
         }
     }
-    
+
     // MARK: - utility
     private func calculateAge(birthday: String) -> String {
         let dateFormatter = DateFormatter()

@@ -11,7 +11,7 @@ struct APIMovieCredits: Decodable {
     let id: Int
     let cast: [APIMovieCreditsCast]
     let crew: [APIMovieCreditsCrew]
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id, cast, crew

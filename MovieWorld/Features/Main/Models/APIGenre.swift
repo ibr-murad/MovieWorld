@@ -10,7 +10,7 @@ struct APIGenre: Decodable {
     // MARK: - variables
     let id: Int
     let name: String
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id, name

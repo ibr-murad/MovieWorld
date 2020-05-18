@@ -10,7 +10,7 @@ struct APIMedia: Decodable {
     // MARK: - variables
     let id: Int
     let results: [APIVideo]
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id, results

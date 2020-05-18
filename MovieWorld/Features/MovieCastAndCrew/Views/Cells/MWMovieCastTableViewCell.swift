@@ -18,13 +18,13 @@ class MWMovieCastTableViewCell: UITableViewCell {
             self.requestForActorDetail()
         }
     }
-    
+
     private var actorDetails: APIPerson? {
         didSet {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var newContentView: UIView = {
         var view = UIView()
@@ -43,7 +43,7 @@ class MWMovieCastTableViewCell: UITableViewCell {
         image.clipsToBounds = true
         return image
     }()
-    
+
     private lazy var nameLabel: UILabel = {
         var label = UILabel()
         label.text = "Name Name "
@@ -53,7 +53,7 @@ class MWMovieCastTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var characterLabel: UILabel = {
         var label = UILabel()
         label.text = "Character Character"
@@ -63,7 +63,7 @@ class MWMovieCastTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var dateOfBirthLabel: UILabel = {
         var label = UILabel()
         label.text = "01.03.1978 to date (40 years)"
@@ -76,29 +76,29 @@ class MWMovieCastTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // MARK: - initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         self.backgroundColor = .none
         self.selectionStyle = .none
-        
+
         self.contentView.addSubview(self.newContentView)
         self.newContentView.addSubview(self.profileImageView)
         self.newContentView.addSubview(self.nameLabel)
         self.newContentView.addSubview(self.characterLabel)
         self.newContentView.addSubview(self.dateOfBirthLabel)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(actor: APIActor) {
         self.actor = actor
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -124,10 +124,10 @@ class MWMovieCastTableViewCell: UITableViewCell {
             make.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(4)
         }
-        
+
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     func setup() {
         guard let actor = self.actorDetails else { return }
@@ -148,10 +148,10 @@ class MWMovieCastTableViewCell: UITableViewCell {
         if let birthday = actor.birthday {
             self.dateOfBirthLabel.text = self.calculateAge(birthday: birthday)
         }
-        
+
         self.setNeedsUpdateConstraints()
     }
-    
+
     // MARK: - request
     private func requestForActorDetail() {
         MWNetwork.shared.request(
@@ -162,10 +162,10 @@ class MWMovieCastTableViewCell: UITableViewCell {
         }) { (error, response) in
             print(error)
         }
-        
+
         self.setNeedsUpdateConstraints()
     }
-    
+
     // MARK: - utility
     private func calculateAge(birthday: String) -> String {
         let dateFormatter = DateFormatter()

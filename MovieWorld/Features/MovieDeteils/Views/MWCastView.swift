@@ -17,7 +17,7 @@ class MWCastView: UIView {
         }
     }
     private var cast: [APIActor] = []
-    
+
     // MARK: - gui variables
     private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     private lazy var newContentView: UIView = {
@@ -26,7 +26,7 @@ class MWCastView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var label: UILabel = {
         var label = UILabel()
         label.text = NSLocalizedString("cast", comment: "")
@@ -34,14 +34,14 @@ class MWCastView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var button: MWAllButton = {
         var button = MWAllButton()
         button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: self.flowLayout)
         collectionView.backgroundColor = .white
@@ -53,32 +53,32 @@ class MWCastView: UIView {
                                 forCellWithReuseIdentifier: MWCastCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
-    
+
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 72, height: 120)
         return layout
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.addSubview(self.newContentView)
         self.newContentView.addSubview(self.label)
         self.newContentView.addSubview(self.button)
         self.newContentView.addSubview(self.collectionView)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(movie: APIMovieDetails) {
         self.movie = movie
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -98,10 +98,10 @@ class MWCastView: UIView {
             make.top.equalTo(self.button.snp.bottom).offset(16)
             make.left.right.bottom.equalToSuperview()
         }
-        
+
         super.updateConstraints()
     }
-    
+
     private func fetchCast() {
         MWNetwork.shared.request(
             url: "movie/\(self.movie?.id ?? 481848)/credits",

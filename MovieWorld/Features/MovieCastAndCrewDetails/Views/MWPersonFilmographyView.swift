@@ -9,7 +9,6 @@
 import UIKit
 import SnapKit
 
-
 class MWPersonFilmographyView: UIView {
     // MARK: - variables
     private var isActor: Bool = true
@@ -19,7 +18,7 @@ class MWPersonFilmographyView: UIView {
         }
     }
     private var movies: [APIMovieCreditsCast] = []
-    
+
     // MARK: - gui variables
     private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     private lazy var newContentView: UIView = {
@@ -28,7 +27,7 @@ class MWPersonFilmographyView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var label: UILabel = {
         var label = UILabel()
         label.text = NSLocalizedString("filmography", comment: "")
@@ -36,7 +35,7 @@ class MWPersonFilmographyView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: self.flowLayout)
         collectionView.backgroundColor = .white
@@ -48,31 +47,31 @@ class MWPersonFilmographyView: UIView {
                                 forCellWithReuseIdentifier: MWPersonFilmographyCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
-    
+
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 130, height: 225)
         return layout
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.addSubview(self.newContentView)
         self.newContentView.addSubview(self.label)
         self.newContentView.addSubview(self.collectionView)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(personId: Int) {
         self.personId = personId
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -87,10 +86,10 @@ class MWPersonFilmographyView: UIView {
             make.top.equalTo(self.label.snp.bottom).offset(12)
             make.left.right.bottom.equalToSuperview()
         }
-        
+
         super.updateConstraints()
     }
-    
+
     private func requestForPersonFilmography() {
         MWNetwork.shared.request(url: "person/\(self.personId)/movie_credits",
             okHandler: { [weak self] (data: APIMovieCredits, response) in
@@ -104,7 +103,7 @@ class MWPersonFilmographyView: UIView {
             print(error)
         }
     }
-    
+
     private func mergeArrays(crews: [APIMovieCreditsCrew]) {
         for movie in crews {
             self.movies.append(
@@ -126,7 +125,7 @@ extension MWPersonFilmographyView: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.movies.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: MWPersonFilmographyCollectionViewCell.reuseIdentifier,
@@ -134,7 +133,7 @@ extension MWPersonFilmographyView: UICollectionViewDelegate, UICollectionViewDat
         (cell as? MWPersonFilmographyCollectionViewCell)?.initView(movie: self.movies[indexPath.row])
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let deteilController = MWDetailsViewConroller()
         deteilController.initController(movieId: self.movies[indexPath.row].id)

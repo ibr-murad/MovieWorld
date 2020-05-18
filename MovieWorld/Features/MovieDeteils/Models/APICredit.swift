@@ -15,7 +15,7 @@ struct APICredit: Decodable {
     let creditId: String
     let gender: Int?
     let job: String
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id,

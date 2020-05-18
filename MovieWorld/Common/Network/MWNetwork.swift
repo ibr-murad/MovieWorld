@@ -20,10 +20,10 @@ class MWNetwork {
     private let api_key: String = "79d5894567be5b76ab7434fc12879584"
     private var params: [String: String] = ["api_key": "79d5894567be5b76ab7434fc12879584",
                                             "language": NSLocalizedString("en", comment: "")]
-    
+
     // MARK: - initialization
     private init() {}
-    
+
     // MARK: - request
     func request<T: Decodable>(url: String,
                                params: [String: String]? = nil,

@@ -17,7 +17,7 @@ struct APIMovieCreditsCast: Decodable {
     let overview: String
     let genres: [Int]
     let character: String
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id,

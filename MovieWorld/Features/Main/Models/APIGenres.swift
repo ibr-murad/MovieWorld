@@ -9,7 +9,7 @@
 struct APIGenres: Decodable {
     // MARK: - variables
     let genres: [APIGenre]
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case genres

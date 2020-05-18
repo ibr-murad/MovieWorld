@@ -14,7 +14,7 @@ struct APIActor: Decodable {
     let photo: String?
     let creditId: String
     let gender: Int?
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id,

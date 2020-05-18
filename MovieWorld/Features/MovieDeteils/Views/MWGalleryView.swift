@@ -17,7 +17,7 @@ class MWGalleryView: UIView {
         }
     }
     private var gallery: [APIImage] = []
-    
+
     // MARK: - gui variables
     private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
     private lazy var newContentView: UIView = {
@@ -26,7 +26,7 @@ class MWGalleryView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var label: UILabel = {
         var label = UILabel()
         label.text = NSLocalizedString("gallery", comment: "")
@@ -34,7 +34,7 @@ class MWGalleryView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: self.flowLayout)
         collectionView.backgroundColor = .white
@@ -45,31 +45,31 @@ class MWGalleryView: UIView {
         collectionView.register(MWGalleryCollectionViewCell.self, forCellWithReuseIdentifier: MWGalleryCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
-    
+
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 180, height: 87)
         return layout
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.addSubview(self.newContentView)
         self.newContentView.addSubview(self.label)
         self.newContentView.addSubview(self.collectionView)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(movie: APIMovieDetails) {
         self.movie = movie
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -84,10 +84,10 @@ class MWGalleryView: UIView {
             make.top.equalTo(self.label.snp.bottom).offset(16)
             make.left.right.bottom.equalToSuperview()
         }
-        
+
         super.updateConstraints()
     }
-    
+
     private func fetchGallery() {
         MWNetwork.shared.request(
             url: "movie/\(self.movie?.id ?? 481848)/images",
@@ -110,7 +110,7 @@ extension MWGalleryView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.gallery.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MWGalleryCollectionViewCell.reuseIdentifier,
                                                      for: indexPath)

@@ -16,7 +16,7 @@ struct APIPerson: Decodable {
     let biography: String
     let popularity: Double
     let placeOfBirth: String?
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id,

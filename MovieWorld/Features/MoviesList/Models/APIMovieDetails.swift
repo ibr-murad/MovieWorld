@@ -19,8 +19,8 @@ struct APIMovieDetails: Decodable {
     let runtime: Int?
     let adult: Bool
     let countries: [APIProductionCountries]
-    let voteCount:Int
-    
+    let voteCount: Int
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id,

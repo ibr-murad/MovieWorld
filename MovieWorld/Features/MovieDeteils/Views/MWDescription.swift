@@ -16,7 +16,7 @@ class MWDescription: UIView {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var titleLabel: UILabel = {
         var label = UILabel()
@@ -25,7 +25,7 @@ class MWDescription: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var qualityLabel: UILabel = {
         var label = UILabel()
         label.text = "HD"
@@ -34,7 +34,7 @@ class MWDescription: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var ageLabel: UILabel = {
         var label = UILabel()
         label.text = "16+"
@@ -43,7 +43,7 @@ class MWDescription: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var timingLabel: UILabel = {
         var label = UILabel()
         label.text = "116 minutes"
@@ -52,7 +52,7 @@ class MWDescription: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var descriptionLabel: UILabel = {
         var label = UILabel()
         label.text = "danger of the game, as it doesn’t like cheat"
@@ -62,26 +62,26 @@ class MWDescription: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.addSubview(self.titleLabel)
         self.addSubview(self.qualityLabel)
         self.addSubview(self.ageLabel)
         self.addSubview(self.timingLabel)
         self.addSubview(self.descriptionLabel)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(movie: APIMovieDetails) {
         self.movie = movie
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.titleLabel.snp.updateConstraints { (make) in
@@ -103,10 +103,10 @@ class MWDescription: UIView {
             make.top.equalTo(self.qualityLabel.snp.bottom).offset(8)
             make.left.right.bottom.equalToSuperview()
         }
-        
+
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     private func setup() {
         self.descriptionLabel.text = self.movie?.overview
@@ -116,7 +116,7 @@ class MWDescription: UIView {
             self.ageLabel.text = "12+"
         }
         self.timingLabel.text = "\(self.movie?.runtime ?? 0)"
-        
+
         self.setNeedsUpdateConstraints()
     }
 }

@@ -13,7 +13,7 @@ class MWCategoryViewControler: MWBaseViewController {
     // MARK: - variables
     private let reuseIdentifier = "MWCategoryTableCell"
     private var genres: [Genre] = []
-    
+
     // MARK: - gui variables
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -23,28 +23,28 @@ class MWCategoryViewControler: MWBaseViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.reuseIdentifier)
         return tableView
     }()
-    
+
+    // MARK: - constraints
+    private func makeConstraints() {
+        self.tableView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+    }
+
     // MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.setupController()
         self.view.addSubview(tableView)
-        self.makeConstraintsForTableView()
+        self.makeConstraints()
         MWSystem.shared.requestGenres { [weak self] (data) in
             guard let self = self else { return }
             self.genres = data
             self.tableView.reloadData()
         }
     }
-    
-    // MARK: - constraints
-    private func makeConstraintsForTableView() {
-        self.tableView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-        }
-    }
-    
+
     // MARK: - setters
     private func setupController() {
         self.controllerTitle = NSLocalizedString("categoryController", comment: "")
@@ -57,7 +57,7 @@ extension MWCategoryViewControler: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return genres.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: self.reuseIdentifier)
         let accessoryImage = UIImageView(image: UIImage(named: "deteilIcon"))
@@ -68,7 +68,7 @@ extension MWCategoryViewControler: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = genres[indexPath.row].name.capitalizingFirstLetter()
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let moviesListController = MWMoviesListViewController()
         moviesListController.initController(title: self.genres[indexPath.row].name,

@@ -11,7 +11,7 @@ struct APICast: Decodable {
     let id: Int
     let cast: [APIActor]
     let crew: [APICredit]
-    
+
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id, cast, crew

@@ -17,15 +17,15 @@ class MWDetailsViewConroller: MWBaseViewController {
             self.requestForMovieDetails()
         }
     }
-    var movie: APIMovieDetails? 
-    
+    var movie: APIMovieDetails?
+
     // MARK: - gui variables
     private lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.showsVerticalScrollIndicator = false
         return scroll
     }()
-    
+
     private lazy var cardView: MWCardView = {
         let view = MWCardView()
         if let movie = self.movie {
@@ -33,7 +33,7 @@ class MWDetailsViewConroller: MWBaseViewController {
         }
         return view
     }()
-    
+
     private lazy var filmView: MWFilmView = {
         let view = MWFilmView()
         if let movie = self.movie {
@@ -41,7 +41,7 @@ class MWDetailsViewConroller: MWBaseViewController {
         }
         return view
     }()
-    
+
     private lazy var descriptionView: MWDescription = {
         let view = MWDescription()
         if let movie = self.movie {
@@ -49,7 +49,7 @@ class MWDetailsViewConroller: MWBaseViewController {
         }
         return view
     }()
-    
+
     private lazy var castView: MWCastView = {
         let view = MWCastView()
         if let movie = self.movie {
@@ -59,7 +59,7 @@ class MWDetailsViewConroller: MWBaseViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.allCastTapped)))
         return view
     }()
-    
+
     private lazy var galleryView: MWGalleryView = {
         let view = MWGalleryView()
         if let movie = self.movie {
@@ -67,26 +67,12 @@ class MWDetailsViewConroller: MWBaseViewController {
         }
         return view
     }()
-    
-    // MARK: - view life cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.playVideo),
-                                               name: .presentPlayerViewController,
-                                               object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-    }
-    
+
+    // MARK: - initialization
     func initController(movieId: Int) {
         self.movieId = movieId
     }
-    
+
     // MARK: - constraints
     private func makeConstraints() {
         self.scrollView.snp.makeConstraints { (make) in
@@ -114,7 +100,22 @@ class MWDetailsViewConroller: MWBaseViewController {
             make.left.right.bottom.equalToSuperview()
         }
     }
-    
+
+    // MARK: - view life cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.playVideo),
+                                               name: .presentPlayerViewController,
+                                               object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+    }
+
     // MARK: - setters
     private func setupController() {
         self.view.addSubview(self.scrollView)
@@ -123,11 +124,10 @@ class MWDetailsViewConroller: MWBaseViewController {
         self.scrollView.addSubview(self.descriptionView)
         self.scrollView.addSubview(self.castView)
         self.scrollView.addSubview(self.galleryView)
-        
         self.makeConstraints()
         self.navigationController?.navigationBar.prefersLargeTitles = false
     }
-    
+
     // MARK: - requests
     private func requestForMovieDetails() {
         let group = DispatchGroup()
@@ -141,23 +141,23 @@ class MWDetailsViewConroller: MWBaseViewController {
             print(error)
             group.leave()
         }
-        
+
         group.notify(queue: .main) {
             self.setupController()
         }
     }
-    
+
     // MARK: - actions
     @objc func allCastTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
         let castAndCrewViewController = MWMovieCastAndCrewViewController()
         castAndCrewViewController.initController(movieId: self.movie?.id ?? 0)
         MWInterface.shared.pushVC(vc: castAndCrewViewController)
     }
-    
+
     @objc func playVideo(_ tapGestureRecognizer: UITapGestureRecognizer) {
         let playerViewController = AVPlayerViewController()
         self.present(playerViewController, animated: true)
-        
+
         MWNetwork.shared.request(url: "movie/\(self.movie?.id ?? 0)/videos",
             okHandler: { [weak self] (data: APIMedia, response) in
                 guard let self = self else { return }

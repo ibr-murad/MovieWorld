@@ -10,7 +10,7 @@ import Foundation
 
 enum MWMainSections {
     case nowPlaying, popular, topRated, upcoming
-    
+
     func getSectionModel() -> MWMainSection {
         switch self {
         case .nowPlaying:

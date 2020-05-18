@@ -18,7 +18,7 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
     private let crewCellReuseIdentifier = "MWMovieCrewTableViewCell"
     private var cast: [APIActor] = []
     private var crew: [MWCrewSection] = []
-    
+
     // MARK: - gui variables
     private lazy var castTableView: UITableView = {
         var tableView = UITableView()
@@ -30,7 +30,7 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
                            forCellReuseIdentifier: MWMovieCastTableViewCell.reuseIdentifier)
         return tableView
     }()
-    
+
     private lazy var crewTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -40,19 +40,12 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.crewCellReuseIdentifier)
         return tableView
     }()
-    
+
     // MARK: - initialization
     func initController(movieId: Int) {
         self.movieId = movieId
     }
-    
-    // MARK: - view life cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.setupController()
-    }
-    
+
     // MARK: - constraints
     private func makeConstraints() {
         self.castTableView.snp.makeConstraints { (make) in
@@ -64,7 +57,14 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
             make.left.right.bottom.equalToSuperview()
         }
     }
-    
+
+    // MARK: - view life cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.setupController()
+    }
+
     // MARK: - setters
     private func setupController() {
         self.controllerTitle = NSLocalizedString("castController", comment: "")
@@ -73,7 +73,7 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
         self.view.addSubview(self.crewTableView)
         self.makeConstraints()
     }
-    
+
     private func setCrew(data: [APICredit]) {
         let jobs: Set<String> = Set(data.map { return $0.job })
         for job in jobs {
@@ -86,7 +86,7 @@ class MWMovieCastAndCrewViewController: MWBaseViewController {
             self.crew.append(MWCrewSection(title: job, crew: persons))
         }
     }
-    
+
     // MARK: - request
     private func fetchCastAndCrew() {
         MWNetwork.shared.request(url: "movie/\(self.movieId)/credits",
@@ -110,7 +110,7 @@ extension MWMovieCastAndCrewViewController: UITableViewDelegate, UITableViewData
         }
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
         case self.castTableView:
@@ -121,14 +121,14 @@ extension MWMovieCastAndCrewViewController: UITableViewDelegate, UITableViewData
             return 0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if tableView == self.crewTableView {
             return self.crew[section].title
         }
         return ""
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
         switch tableView {
@@ -149,7 +149,7 @@ extension MWMovieCastAndCrewViewController: UITableViewDelegate, UITableViewData
             return cell
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let castAndCrewDatailController = MWMovieCastAndCrewDetailsViewController()
         switch tableView {

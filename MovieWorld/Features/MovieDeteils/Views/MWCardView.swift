@@ -16,7 +16,7 @@ class MWCardView: UIView {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     let posterImageInsets = UIEdgeInsets(top: 10, left: 16, bottom: 32, right: 16)
     private lazy var posterImageView: UIImageView = {
@@ -28,7 +28,7 @@ class MWCardView: UIView {
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-    
+
     private lazy var nameLabel: UILabel = {
         var label = UILabel()
         label.text = "21 Briges"
@@ -37,7 +37,7 @@ class MWCardView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var yearCountryLabel: UILabel = {
         var label = UILabel()
         label.text = "2019, USA"
@@ -46,7 +46,7 @@ class MWCardView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var genresLabel: UILabel = {
         var label = UILabel()
         label.text = "Drama, Foreing Drama, Foreing Drama, Foreing Drama, Foreing Drama, Foreing"
@@ -58,7 +58,7 @@ class MWCardView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var ratingLabel: UILabel = {
         var label = UILabel()
         label.text = "IMDB 8.2, KP 8.3"
@@ -67,29 +67,29 @@ class MWCardView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.backgroundColor = .white
         self.addShadow()
-        
+
         self.addSubview(self.posterImageView)
         self.addSubview(self.nameLabel)
         self.addSubview(self.yearCountryLabel)
         self.addSubview(self.genresLabel)
         self.addSubview(self.ratingLabel)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(movie: APIMovieDetails) {
         self.movie = movie
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.posterImageView.snp.updateConstraints { (make) in
@@ -117,10 +117,10 @@ class MWCardView: UIView {
             make.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(8)
         }
-        
+
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     private func setup() {
         guard let movie = self.movie else { return }
@@ -151,7 +151,7 @@ class MWCardView: UIView {
         }
         self.genresLabel.text = text
         self.ratingLabel.text = "IMDB \(movie.rating)"
-        
+
         self.setNeedsUpdateConstraints()
     }
 }

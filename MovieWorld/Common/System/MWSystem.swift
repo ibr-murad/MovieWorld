@@ -15,8 +15,7 @@ class MWSystem {
 
     // MARK: - initialization
     private init() {}
-    
-    
+
     // MARK: - request
     func requestGenres(completion: @escaping ([Genre]) -> Void) {
         MWNetwork.shared.request(
@@ -28,7 +27,6 @@ class MWSystem {
                     genre.id = Int32($0.id)
                     genre.name = $0.name
                 }
-                
                 DispatchQueue.main.async {
                     self.persistace.save {
                         self.persistace.fetch(Genre.self, completion: { (genres) in

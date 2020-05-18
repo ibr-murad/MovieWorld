@@ -23,7 +23,7 @@ class MWMoviesListTableViewCell: UITableViewCell {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var newContentView: UIView = {
         var view = UIView()
@@ -31,7 +31,7 @@ class MWMoviesListTableViewCell: UITableViewCell {
         view.addShadow()
         return view
     }()
-    
+
     private lazy var posterImageView: UIImageView = {
         var image = UIImageView()
         image.image = UIImage(named: "movie")
@@ -41,7 +41,7 @@ class MWMoviesListTableViewCell: UITableViewCell {
         image.clipsToBounds = true
         return image
     }()
-    
+
     private lazy var nameLabel: UILabel = {
         var label = UILabel()
         label.text = "21 Briges"
@@ -51,7 +51,7 @@ class MWMoviesListTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var yearCountryLabel: UILabel = {
         var label = UILabel()
         label.text = "2019, USA"
@@ -61,7 +61,7 @@ class MWMoviesListTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var genresLabel: UILabel = {
         var label = UILabel()
         label.text = "Drama, Foreing"
@@ -74,7 +74,7 @@ class MWMoviesListTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var ratingLabel: UILabel = {
         var label = UILabel()
         label.text = "IMDB 8.2, KP 8.3"
@@ -83,14 +83,14 @@ class MWMoviesListTableViewCell: UITableViewCell {
         label.font = .boldSystemFont(ofSize: 13)
         return label
     }()
-    
+
     // MARK: - initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         self.backgroundColor = .white
         self.selectionStyle = .none
-        
+
         self.contentView.addSubview(self.newContentView)
         self.newContentView.addSubview(self.posterImageView)
         self.newContentView.addSubview(self.nameLabel)
@@ -98,15 +98,15 @@ class MWMoviesListTableViewCell: UITableViewCell {
         self.newContentView.addSubview(self.genresLabel)
         self.newContentView.addSubview(self.ratingLabel)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(movie: APIMovie) {
         self.movie = movie
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -138,10 +138,10 @@ class MWMoviesListTableViewCell: UITableViewCell {
             make.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(8)
         }
-        
+
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     private func setup() {
         guard let movie = self.movieDetails else { return }
@@ -172,10 +172,10 @@ class MWMoviesListTableViewCell: UITableViewCell {
         }
         self.genresLabel.text = text
         self.ratingLabel.text = "IMDB \(movie.rating)"
-        
+
         self.setNeedsUpdateConstraints()
     }
-    
+
     // MARK: - request
     private func requestForMovieDetail() {
         MWNetwork.shared.request(url: "movie/\(self.movie?.id ?? 0)",

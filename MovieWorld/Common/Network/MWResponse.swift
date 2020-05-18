@@ -8,7 +8,7 @@
 
 enum MWResponse {
     case response(code: Int)
-    
+
     func getMessage() -> String {
         var message = ""
         switch self {

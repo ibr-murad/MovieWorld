@@ -12,7 +12,7 @@ class MWAllButton: UIButton {
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.setTitle(NSLocalizedString("allButton", comment: ""), for: .normal)
         self.setImage(UIImage(named: "nextArrow"), for: .normal)
         self.semanticContentAttribute = .forceRightToLeft
@@ -21,7 +21,7 @@ class MWAllButton: UIButton {
         self.layer.cornerRadius = 5
         self.isEnabled = false
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -19,14 +19,14 @@ class MWBaseViewController: UIViewController {
             self.navigationController?.navigationBar.backItem?.title = " "
         }
     }
-    
+
     // MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.initController()
     }
-    
+
     // MARK: - setters
     private func initController() {
         self.view.backgroundColor = .white

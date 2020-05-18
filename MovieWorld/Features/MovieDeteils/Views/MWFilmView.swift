@@ -16,7 +16,7 @@ class MWFilmView: UIView {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var videoImage: UIImageView = {
         var image = UIImageView()
@@ -30,22 +30,21 @@ class MWFilmView: UIView {
             action: #selector(self.playImageTapped)))
         return image
     }()
-    
+
     private lazy var playImage: UIImageView = {
         var image = UIImageView()
         image.image = UIImage(named: "playIcon")
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-    
-    
+
     private lazy var likeImage: UIImageView = {
         var image = UIImageView()
         image.image = UIImage(named: "likeIcon")
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-    
+
     private lazy var likeLabel: UILabel = {
         var label = UILabel()
         label.text = "356"
@@ -53,25 +52,25 @@ class MWFilmView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.addSubview(self.videoImage)
         self.videoImage.addSubview(self.playImage)
         self.addSubview(self.likeImage)
         self.addSubview(self.likeLabel)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(movie: APIMovieDetails) {
         self.movie = movie
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.videoImage.snp.updateConstraints { (make) in
@@ -89,10 +88,10 @@ class MWFilmView: UIView {
             make.top.equalTo(self.videoImage.snp.bottom).offset(16)
             make.right.bottom.equalToSuperview()
         }
-        
+
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     private func setup() {
         guard let movie = self.movie else { return }
@@ -107,10 +106,10 @@ class MWFilmView: UIView {
                 .cacheOriginalImage
             ])
         self.likeLabel.text = String(movie.voteCount)
-        
+
         self.setNeedsUpdateConstraints()
     }
-    
+
     // MARK: - actions
     @objc func playImageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
         NotificationCenter.default.post(name: .presentPlayerViewController, object: nil)

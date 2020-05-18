@@ -18,7 +18,7 @@ class MWCastCollectionViewCell: UICollectionViewCell {
             self.setup()
         }
     }
-    
+
     // MARK: - gui variables
     private lazy var image: UIImageView = {
         var image = UIImageView()
@@ -28,7 +28,7 @@ class MWCastCollectionViewCell: UICollectionViewCell {
         image.clipsToBounds = true
         return image
     }()
-    
+
     private lazy var title: UILabel = {
         var title = UILabel()
         title.text = "Dwayne"
@@ -36,7 +36,7 @@ class MWCastCollectionViewCell: UICollectionViewCell {
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
-    
+
     private lazy var subTitle: UILabel = {
         var subTitle = UILabel()
         subTitle.text = "Johnson"
@@ -44,24 +44,24 @@ class MWCastCollectionViewCell: UICollectionViewCell {
         subTitle.translatesAutoresizingMaskIntoConstraints = false
         return subTitle
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.contentView.addSubview(self.image)
         self.contentView.addSubview(self.title)
         self.contentView.addSubview(self.subTitle)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func initView(actor: APIActor) {
         self.actor = actor
     }
-    
+
     // MARK: - constraints
    override func updateConstraints() {
         self.image.snp.updateConstraints { (make) in
@@ -76,10 +76,10 @@ class MWCastCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(self.title.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
-    
+
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     func setup() {
         guard let actor = self.actor else { return }
@@ -95,7 +95,7 @@ class MWCastCollectionViewCell: UICollectionViewCell {
                     .cacheOriginalImage
                 ])
         }
-        
+
         let indexOfSpaceInName = actor.name.firstIndex(of: " ")
         let indexOfSpaceInCharacter = actor.character.firstIndex(of: " ")
         if let indexName = indexOfSpaceInName, let indexCharacter = indexOfSpaceInCharacter {
@@ -105,7 +105,7 @@ class MWCastCollectionViewCell: UICollectionViewCell {
             self.title.text = actor.name
             self.subTitle.text = actor.character
         }
-        
+
         self.setNeedsUpdateConstraints()
     }
 }

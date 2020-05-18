@@ -12,7 +12,7 @@ import SnapKit
 class MWGroupstCollectionViewCell: UICollectionViewCell {
     // MARK: - variables
     static let reuseIdentifier = "MWGroupstCollectionViewCell"
-    
+
     // MARK: - gui variables
     lazy var conteinerView: UIView = {
         let view = UIView()
@@ -22,27 +22,27 @@ class MWGroupstCollectionViewCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var categoryLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 13)
         return label
     }()
-    
+
     // MARK: - initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.backgroundColor = .clear
         self.contentView.addSubview(self.conteinerView)
         self.conteinerView.addSubview(self.categoryLabel)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - constraints
     override func updateConstraints() {
         self.conteinerView.snp.updateConstraints { (make) in
@@ -53,7 +53,7 @@ class MWGroupstCollectionViewCell: UICollectionViewCell {
         }
         super.updateConstraints()
     }
-    
+
     // MARK: - setters
     func setCategory(_ category: String) {
         self.categoryLabel.text = category

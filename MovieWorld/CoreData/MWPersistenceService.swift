@@ -21,12 +21,12 @@ class MWPersistenceService {
         })
         return container
     }()
-    
+
     // MARK: - initialization
     private init() {
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
-    
+
     // MARK: - helpers
     func save(completion: @escaping () -> Void) {
         let context = persistentContainer.viewContext
@@ -39,7 +39,7 @@ class MWPersistenceService {
             }
         }
     }
-    
+
     func fetch<T: NSManagedObject>(_ type: T.Type, completion: @escaping ([T]) ->Void) {
         let request = NSFetchRequest<T>(entityName: String(describing: type))
         do {
