@@ -34,7 +34,6 @@ class MWMoviesListTableViewCell: UITableViewCell {
 
     private lazy var posterImageView: UIImageView = {
         var image = UIImageView()
-        image.image = UIImage(named: "movie")
         image.translatesAutoresizingMaskIntoConstraints = false
         image.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         image.layer.cornerRadius = 5
@@ -107,6 +106,10 @@ class MWMoviesListTableViewCell: UITableViewCell {
         self.movie = movie
     }
 
+    override func prepareForReuse() {
+        self.posterImageView.image = nil
+    }
+    
     // MARK: - constraints
     override func updateConstraints() {
         self.newContentView.snp.updateConstraints { (make) in
@@ -156,6 +159,9 @@ class MWMoviesListTableViewCell: UITableViewCell {
                     .transition(.fade(1)),
                     .cacheOriginalImage
                 ])
+        } else {
+            self.posterImageView.image = UIImage(named: "defaultMovieImage")
+            self.posterImageView.contentMode = .scaleAspectFit
         }
         self.nameLabel.text = movie.title
         if movie.countries.count > 0 {

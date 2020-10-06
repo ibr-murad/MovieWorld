@@ -22,7 +22,6 @@ class MWCastCollectionViewCell: UICollectionViewCell {
     // MARK: - gui variables
     private lazy var image: UIImageView = {
         var image = UIImageView()
-        image.image = UIImage(named: "apiMovie")
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 5
         image.clipsToBounds = true

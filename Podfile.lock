@@ -2,33 +2,33 @@ PODS:
   - Kingfisher (5.13.4):
     - Kingfisher/Core (= 5.13.4)
   - Kingfisher/Core (5.13.4)
-  - Reveal-SDK (25)
+  - Pageboy (3.6.1)
   - SnapKit (4.2.0)
-  - XCDYouTubeKit (2.13.0)
-  - YouTubePlayer (0.4.0)
+  - Tabman (2.9.1):
+    - Pageboy (~> 3.6.0)
+  - XCDYouTubeKit (2.14.1)
 
 DEPENDENCIES:
   - Kingfisher (~> 5.0)
-  - Reveal-SDK
   - SnapKit (~> 4.0)
+  - Tabman
   - XCDYouTubeKit
-  - YouTubePlayer
 
 SPEC REPOS:
   trunk:
     - Kingfisher
-    - Reveal-SDK
+    - Pageboy
     - SnapKit
+    - Tabman
     - XCDYouTubeKit
-    - YouTubePlayer
 
 SPEC CHECKSUMS:
   Kingfisher: d2279a7abece3c7f25a80cd2b7f363ca5cf3f44c
-  Reveal-SDK: 4ea3b6d766c5e2ef387488a2f020d9e5d4af4af3
+  Pageboy: 29a2d474ad99404b4d77f325e0ab6d705930a4fb
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  XCDYouTubeKit: 4902fca1721b593112b6607c509a089e911294f3
-  YouTubePlayer: 028451f6772f372d4759866db99824c676ac1473
+  Tabman: 085d89c65be9e883629bdaf5b1453a6397e57846
+  XCDYouTubeKit: 5d50bbacdd9fedf26fb578bab901d946ff3d064c
 
-PODFILE CHECKSUM: 6c73106ca67be25501e2a721f6e9fa7ceb0b3add
+PODFILE CHECKSUM: 568b5b4e19f00dbf5a832b405783e9e463d199ea
 
 COCOAPODS: 1.9.1

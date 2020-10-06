@@ -4,10 +4,12 @@
 target 'MovieWorld' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
+
   inhibit_all_warnings!
 
   pod 'SnapKit', '~> 4.0'
   pod 'Kingfisher', '~> 5.0'
+  pod 'Tabman'
   pod 'XCDYouTubeKit'
 
 end

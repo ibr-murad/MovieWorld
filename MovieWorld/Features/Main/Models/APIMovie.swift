@@ -6,11 +6,10 @@
 //  Copyright © 2020 Murad. All rights reserved.
 //
 
-struct APIMovie: Decodable {
+struct APIMovie: Codable {
     // MARK: - variables
     let id: Int
     let posterPath: String?
-    let videoPath: String?
     let backdrop: String?
     let title: String
     let releaseDate: String
@@ -21,12 +20,12 @@ struct APIMovie: Decodable {
     // MARK: - enum
     private enum CodingKeys: String, CodingKey {
         case id,
-        posterPath = "poster_path",
-        videoPath,
-        backdrop = "backdrop_path",
-        title, releaseDate = "release_date",
-        rating = "vote_average",
+        title,
         overview,
+        posterPath = "poster_path",
+        backdrop = "backdrop_path",
+        releaseDate = "release_date",
+        rating = "vote_average",
         genres = "genre_ids"
     }
 }

@@ -21,7 +21,6 @@ class MWGalleryCollectionViewCell: UICollectionViewCell {
     // MARK: - gui variables
     private lazy var imageView: UIImageView = {
         var image = UIImageView()
-        image.image = UIImage(named: "videoImage")
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 5
         image.clipsToBounds = true

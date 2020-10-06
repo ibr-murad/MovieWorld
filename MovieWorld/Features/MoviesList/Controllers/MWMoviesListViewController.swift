@@ -92,6 +92,13 @@ class MWMoviesListViewController: MWBaseViewController {
     }
 
     // MARK: - view life cycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -105,6 +112,12 @@ class MWMoviesListViewController: MWBaseViewController {
             self.collectionView.reloadData()
             self.tableView.reloadData()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.navigationBar.prefersLargeTitles = false
     }
 
     // MARK: -actions
@@ -121,13 +134,13 @@ class MWMoviesListViewController: MWBaseViewController {
         self.isRequestBusy = true
         MWNetwork.shared.request(url: self.url,
             params: self.params,
-            okHandler: { [weak self] (data: APIResults, response) in
+            okHandler: { [weak self] (result: APIResults, _) in
                 guard let self = self else { return }
-                self.movies.append(contentsOf: data.movies)
-                self.totalPages = data.totalPages
-                self.totalResults = data.totalResults
+                self.movies.append(contentsOf: result.movies)
+                self.totalPages = result.totalPages
+                self.totalResults = result.totalResults
                 group.leave()
-        }) { (error, response) in
+        }) { (error, _) in
             print(error)
             group.leave()
         }
@@ -199,8 +212,9 @@ extension MWMoviesListViewController: UICollectionViewDataSource, UICollectionVi
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MWGroupstCollectionViewCell.reuseIdentifier,
-                                                      for: indexPath)
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: MWGroupstCollectionViewCell.reuseIdentifier,
+            for: indexPath)
         if let cell = cell as? MWGroupstCollectionViewCell {
             cell.setCategory(self.genres[indexPath.row].name)
             if self.filteredGenres[indexPath.row] {

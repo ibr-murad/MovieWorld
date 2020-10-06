@@ -27,6 +27,8 @@ class MWGroupstCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 13)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
@@ -49,7 +51,7 @@ class MWGroupstCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
         self.categoryLabel.snp.updateConstraints { (make) in
-            make.edges.equalToSuperview().inset(5)
+            make.edges.equalToSuperview()
         }
         super.updateConstraints()
     }

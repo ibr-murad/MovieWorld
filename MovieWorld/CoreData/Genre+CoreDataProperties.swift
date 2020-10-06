@@ -12,7 +12,8 @@ extension Genre {
     // MARK: - variables
     @NSManaged public var id: Int32
     @NSManaged public var name: String
-    // MARK: - setters / helpers / actions / handlers / utility
+    
+    // MARK: - helpers
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Genre> {
         return NSFetchRequest<Genre>(entityName: "Genre")
     }
