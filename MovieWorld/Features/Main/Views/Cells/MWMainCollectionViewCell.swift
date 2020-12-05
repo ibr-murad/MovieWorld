@@ -94,6 +94,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
                     .cacheOriginalImage
                 ])
         }
+        self.title.text = movie.title
         let text = movie.releaseDate.replacingOccurrences(of: "-", with: "/")
         self.subTitle.text = text//String(movie.releaseDate.prefix(4))
         self.setNeedsUpdateConstraints()
