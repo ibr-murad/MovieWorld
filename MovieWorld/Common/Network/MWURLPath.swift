@@ -15,4 +15,6 @@ struct MWURLPath {
     static let genreTvList = "genre/tv/list"
     static let genreMovieList = "genre/movie/list"
     static let discoverMovie = "discover/movie"
+    static let searchMovie = "search/movie"
+    static let countries = "configuration/countries"
 }

@@ -34,7 +34,6 @@ class MWPersonCardView: UIView {
     let imageInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
     private lazy var profileImageView: UIImageView = {
         var image = UIImageView()
-        image.image = UIImage(named: "actor")
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 5
         image.clipsToBounds = true

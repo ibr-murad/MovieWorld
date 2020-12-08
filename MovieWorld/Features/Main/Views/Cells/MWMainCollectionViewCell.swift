@@ -22,7 +22,6 @@ class MWMainCollectionViewCell: UICollectionViewCell {
     // MARK: - gui variables
     private lazy var image: UIImageView = {
         var image = UIImageView()
-        image.image = UIImage(named: "apiMovie")
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 5
         image.clipsToBounds = true
@@ -96,8 +95,8 @@ class MWMainCollectionViewCell: UICollectionViewCell {
                 ])
         }
         self.title.text = movie.title
-        self.subTitle.text = String(movie.releaseDate.prefix(4))
-
+        let text = movie.releaseDate.replacingOccurrences(of: "-", with: "/")
+        self.subTitle.text = text//String(movie.releaseDate.prefix(4))
         self.setNeedsUpdateConstraints()
     }
 }

@@ -38,6 +38,7 @@ class MWNetwork {
             errorHandler(.incorrectUrl(url: fullPath), .none)
             return
         }
+        
         let request = URLRequest(url: url)
         self.session.dataTask(with: request) { (data, response, error) in
             DispatchQueue.main.async {

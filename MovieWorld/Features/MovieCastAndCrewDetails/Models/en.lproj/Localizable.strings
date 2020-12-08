@@ -19,13 +19,13 @@
 "categoryController" = "Category";
 "searchController" = "Search";
 "castController" = "Cast";
+"filterController" = "Filter";
 
 // MARK: - main controller sections titles
 "nowPlaing" = "Now plaing";
 "popular" = "Popular";
 "topRated" = "Top rated";
 "upcoming" = "Upcoming";
-
 
 // MARK: - gui variables text
 "allButton" = "All ";

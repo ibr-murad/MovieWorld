@@ -6,7 +6,6 @@ whitelist_rules:
   - function_body_length
   - trailing_newline
   - trailing_comma
-  - trailing_whitespace
   - vertical_whitespace
   - void_return
   - colon

@@ -109,11 +109,12 @@ class MWDetailsViewConroller: MWBaseViewController {
                                                selector: #selector(self.playVideo),
                                                name: .presentPlayerViewController,
                                                object: nil)
+        //self.navigationController?.navigationBar.prefersLargeTitles = false
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        
     }
 
     // MARK: - setters
@@ -149,28 +150,68 @@ class MWDetailsViewConroller: MWBaseViewController {
 
     // MARK: - actions
     @objc func allCastTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
-        let castAndCrewViewController = MWMovieCastAndCrewViewController()
+        /*let castAndCrewViewController = MWMovieCastAndCrewViewController()
         castAndCrewViewController.initController(movieId: self.movie?.id ?? 0)
-        MWInterface.shared.pushVC(vc: castAndCrewViewController)
+        MWInterface.shared.pushVC(vc: castAndCrewViewController)*/
+        
+        let controller = MWCastAndCrewViewController()
+        controller.initController(movieId: self.movie?.id ?? 0)
+        MWInterface.shared.pushVC(vc: controller)
     }
-
+    
     @objc func playVideo(_ tapGestureRecognizer: UITapGestureRecognizer) {
-        let playerViewController = AVPlayerViewController()
+        let avPlayer = AVPlayerViewController()
+        avPlayer.showsPlaybackControls = true
+        avPlayer.view.frame = self.view.frame
+        print(self.view.frame)
+        self.present(avPlayer, animated: true)
+        
+        XCDYouTubeClient.default().getVideoWithIdentifier("01ON04GCwKs") { [weak avPlayer] (video, error) in
+            if let video = video, let avPlayer = avPlayer {
+                let streamURL = video.streamURLs
+                let fullURL = streamURL[XCDYouTubeVideoQuality.HD720.rawValue]
+                    ?? streamURL[XCDYouTubeVideoQuality.medium360.rawValue]
+                    ?? streamURL[XCDYouTubeVideoQuality.small240.rawValue]
+                
+                if let fullURL = fullURL {
+                    print(fullURL)
+                    let assetUrl = AVURLAsset(url: fullURL)
+                    let item = AVPlayerItem(asset: assetUrl)
+                    let player = AVPlayer(playerItem: item)
+                    avPlayer.player = player
+                    avPlayer.player?.play()
+                } else {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+        
+        //01ON04GCwKs
+        /*let playerViewController = AVPlayerViewController()
         self.present(playerViewController, animated: true)
-
+        
         MWNetwork.shared.request(url: "movie/\(self.movie?.id ?? 0)/videos",
+            
             okHandler: { [weak self] (data: APIMedia, response) in
                 guard let self = self else { return }
                 let videoFromYoutube = data.results.first(where: { $0.site == "YouTube"} )
-                XCDYouTubeClient.default().getVideoWithIdentifier(videoFromYoutube?.key) { (video, error) in
-                    if let streamURL = video?.streamURLs[XCDYouTubeVideoQuality.HD720.rawValue] {
+                guard let id = videoFromYoutube?.key else {
+                    self.dismiss(animated: true, completion: nil)
+                    return
+                }
+                XCDYouTubeClient.default().getVideoWithIdentifier(id) { (video, error) in
+                    print(id)
+                    //if let streamURL = video?.streamURLs[XCDYouTubeVideoQuality.HD720.rawValue] {
+                    if let streamURL = video?.streamURLs[XCDYouTubeVideoQuality.medium360.rawValue] {
+                        print(streamURL)
                         playerViewController.player = AVPlayer(url: streamURL)
+                        playerViewController.player?.play()
                     } else {
                         self.dismiss(animated: true, completion: nil)
                     }
                 }
         }) { (error, response) in
             print(error)
-        }
+        }*/
     }
 }

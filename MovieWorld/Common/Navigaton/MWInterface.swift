@@ -16,16 +16,16 @@ class MWInterface {
     weak var window: UIWindow?
 
     // MARK: - gui variables
-    private lazy var tabBarController = MWMainTabBarController()
+    lazy var tabBarController = MWMainTabBarController()
 
     // MARK: - initialization
     private init() {}
 
     // MARK: - setters
     func setup(window: UIWindow) {
-        self.window = window
         window.rootViewController = self.tabBarController
         window.makeKeyAndVisible()
+        self.window = window
     }
 
     private func setupNavigationBarStyle() {

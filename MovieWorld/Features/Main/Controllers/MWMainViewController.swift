@@ -12,10 +12,11 @@ class MWMainViewController: MWBaseViewController {
     // MARK: - variables
     private var results: [APIResults] = []
     private var resultsTitles: [String] = []
-    private var requestUrlPaths = [MWMainSections.nowPlaying.getSectionModel(),
-                                   MWMainSections.popular.getSectionModel(),
-                                   MWMainSections.topRated.getSectionModel(),
-                                   MWMainSections.upcoming.getSectionModel()]
+    private var requestUrlPaths = [
+        MWMainSections.nowPlaying.getSectionModel(),
+        MWMainSections.popular.getSectionModel(),
+        MWMainSections.topRated.getSectionModel(),
+        MWMainSections.upcoming.getSectionModel()]
 
     // MARK: - gui variables
     private lazy var tableView: UITableView = {
@@ -93,6 +94,7 @@ class MWMainViewController: MWBaseViewController {
             }) { (error, response) in
                 group.leave()
                 guard let response = response else {  return }
+                self.attemptRecovery(fromError: error, optionIndex: 0)
                 print(response.getMessage())
                 print(error.localizedDescription)
             }

@@ -45,7 +45,7 @@ class MWMainTabBarController: UITabBarController {
 
     // MARK: - setters
     private func tabBarStyle() {
-        self.tabBar.tintColor = UIColor(named: "activeTabBarItemColor")
+        self.tabBar.tintColor = UIColor(named: "accentColor")
         self.tabBar.barTintColor = .none
     }
 }

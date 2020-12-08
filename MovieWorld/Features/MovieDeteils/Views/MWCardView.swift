@@ -21,7 +21,6 @@ class MWCardView: UIView {
     let posterImageInsets = UIEdgeInsets(top: 10, left: 16, bottom: 32, right: 16)
     private lazy var posterImageView: UIImageView = {
         var image = UIImageView()
-        image.image = UIImage(named: "movie")
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 5
         image.clipsToBounds = true

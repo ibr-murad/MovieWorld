@@ -21,7 +21,7 @@ class MWPersonFilmographyView: UIView {
 
     // MARK: - gui variables
     private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
-    private lazy var newContentView: UIView = {
+    private lazy var containerView: UIView = {
         var view = UIView()
         view.backgroundColor = .none
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -59,9 +59,9 @@ class MWPersonFilmographyView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        self.addSubview(self.newContentView)
-        self.newContentView.addSubview(self.label)
-        self.newContentView.addSubview(self.collectionView)
+        self.addSubview(self.containerView)
+        self.containerView.addSubview(self.label)
+        self.containerView.addSubview(self.collectionView)
     }
 
     required init?(coder: NSCoder) {
@@ -74,7 +74,7 @@ class MWPersonFilmographyView: UIView {
 
     // MARK: - constraints
     override func updateConstraints() {
-        self.newContentView.snp.updateConstraints { (make) in
+        self.containerView.snp.updateConstraints { (make) in
             make.edges.equalToSuperview().inset(self.sectionInsets)
             make.height.equalTo(280)
         }
@@ -89,7 +89,8 @@ class MWPersonFilmographyView: UIView {
 
         super.updateConstraints()
     }
-
+    
+    // MARK: - requests
     private func requestForPersonFilmography() {
         MWNetwork.shared.request(url: "person/\(self.personId)/movie_credits",
             okHandler: { [weak self] (data: APIMovieCredits, response) in

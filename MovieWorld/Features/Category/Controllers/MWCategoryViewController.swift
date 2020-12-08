@@ -60,7 +60,7 @@ extension MWCategoryViewControler: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: self.reuseIdentifier)
-        let accessoryImage = UIImageView(image: UIImage(named: "deteilIcon"))
+        let accessoryImage = UIImageView(image: UIImage(named: "detailIcon"))
         cell.accessoryView = accessoryImage
         cell.backgroundColor = .white
         cell.selectionStyle = .none

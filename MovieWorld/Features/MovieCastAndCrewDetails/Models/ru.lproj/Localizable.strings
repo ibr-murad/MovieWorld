@@ -19,6 +19,7 @@
 "categoryController" = "Категории";
 "searchController" = "Поиск";
 "castController" = "Состав";
+"filterController" = "Фильтр";
 
 // MARK: - main controller sections titles
 "nowPlaing" = "Сейчас смотрят";
