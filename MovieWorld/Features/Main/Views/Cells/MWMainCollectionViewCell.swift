@@ -22,26 +22,25 @@ class MWMainCollectionViewCell: UICollectionViewCell {
     // MARK: - gui variables
     private lazy var image: UIImageView = {
         var image = UIImageView()
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.layer.cornerRadius = 5
+        image.layer.cornerRadius = 8
+        if #available(iOS 13.0, *) {
+            image.layer.cornerCurve = .continuous
+        }
         image.clipsToBounds = true
         return image
     }()
 
     private lazy var title: UILabel = {
-        var title = UILabel()
-        title.text = "21 Briges"
-        title.font = .boldSystemFont(ofSize: 17)
-        title.translatesAutoresizingMaskIntoConstraints = false
-        return title
+        var label = UILabel()
+        label.font = .preferredFont(forTextStyle: .headline)
+        return label
     }()
 
     private lazy var subTitle: UILabel = {
-        var subTitle = UILabel()
-        subTitle.text = "2019, Drama"
-        subTitle.font = .systemFont(ofSize: 13)
-        subTitle.translatesAutoresizingMaskIntoConstraints = false
-        return subTitle
+        var lable = UILabel()
+        lable.font = .preferredFont(forTextStyle: .subheadline)
+        lable.textColor = UIColor.lightGray//.withAlphaComponent(0.6)
+        return lable
     }()
 
     // MARK: - initialization
@@ -63,6 +62,7 @@ class MWMainCollectionViewCell: UICollectionViewCell {
 
     // MARK: - constraints
     override func updateConstraints() {
+        
         self.image.snp.updateConstraints { (make) in
             make.top.left.right.equalToSuperview()
             make.size.equalTo(CGSize(width: 130, height: 185))

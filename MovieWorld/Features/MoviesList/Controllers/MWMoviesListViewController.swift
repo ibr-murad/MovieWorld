@@ -92,12 +92,7 @@ class MWMoviesListViewController: MWBaseViewController {
     }
 
     // MARK: - view life cycle
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,10 +109,17 @@ class MWMoviesListViewController: MWBaseViewController {
         }
     }
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationItem.largeTitleDisplayMode = .always
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
     }
 
     // MARK: -actions

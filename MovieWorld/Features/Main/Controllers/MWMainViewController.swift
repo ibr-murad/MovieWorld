@@ -23,7 +23,7 @@ class MWMainViewController: MWBaseViewController {
         var tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 305
+        tableView.rowHeight = 350
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false

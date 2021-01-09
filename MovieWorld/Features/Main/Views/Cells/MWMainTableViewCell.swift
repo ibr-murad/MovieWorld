@@ -19,26 +19,22 @@ class MWMainTableViewCell: UITableViewCell {
     }
 
     // MARK: - gui variables
-    private let sectionInsets = UIEdgeInsets(top: 24, left: 16, bottom: 0, right: 0)
-    private lazy var newContentView: UIView = {
+    
+    private lazy var containerView: UIView = {
         var view = UIView()
         view.backgroundColor = .none
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     private lazy var label: UILabel = {
         var label = UILabel()
-        label.text = "New"
-        label.font = .boldSystemFont(ofSize: 24)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 28, weight: .medium)
         return label
     }()
 
     private lazy var button: MWAllButton = {
         var button = MWAllButton()
         button.isEnabled = false
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
@@ -50,13 +46,14 @@ class MWMainTableViewCell: UITableViewCell {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(MWMainCollectionViewCell.self, forCellWithReuseIdentifier: MWMainCollectionViewCell.reuseIdentifier)
+        collectionView.contentInset.left = 16
         return collectionView
     }()
 
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 130, height: 230)
+        layout.itemSize = CGSize(width: 130, height: 240)
         return layout
     }()
 
@@ -67,10 +64,10 @@ class MWMainTableViewCell: UITableViewCell {
         self.backgroundColor = .white
         self.selectionStyle = .none
 
-        self.contentView.addSubview(self.newContentView)
-        self.newContentView.addSubview(self.label)
-        self.newContentView.addSubview(self.button)
-        self.newContentView.addSubview(self.collectionView)
+        self.contentView.addSubview(self.containerView)
+        self.containerView.addSubview(self.label)
+        self.containerView.addSubview(self.button)
+        self.containerView.addSubview(self.collectionView)
 
         self.setNeedsUpdateConstraints()
     }
@@ -86,20 +83,20 @@ class MWMainTableViewCell: UITableViewCell {
 
     // MARK: - constraints
     override func updateConstraints() {
-        self.newContentView.snp.updateConstraints { (make) in
-            make.edges.equalToSuperview().inset(self.sectionInsets)
+        self.containerView.snp.updateConstraints { (make) in
+            make.edges.equalToSuperview()
         }
         self.label.snp.updateConstraints { (make) in
-            make.left.top.equalToSuperview()
+            make.top.equalToSuperview().inset(32)
+            make.left.equalToSuperview().inset(16)
             make.right.lessThanOrEqualTo(self.button.snp.left)
         }
         self.button.snp.updateConstraints { (make) in
-            make.top.equalToSuperview().inset(4)
             make.right.equalToSuperview().inset(8)
+            make.centerY.equalTo(label)
         }
         self.collectionView.snp.updateConstraints { (make) in
             make.top.equalTo(self.label.snp.bottom).offset(12)
-            make.top.equalTo(self.button.snp.bottom).offset(16)
             make.left.right.bottom.equalToSuperview()
         }
 
